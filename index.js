@@ -20,6 +20,8 @@ io.on('connection', function(socket){
   });
 });
 
-http.listen(5000, "0.0.0.0", function() {
-  console.log('Node app is running on port 5000');
+var port = process.env.PORT || 5000;
+
+http.listen(port, "0.0.0.0", function() {
+  console.log('Node app is running on port '+port);
 });
