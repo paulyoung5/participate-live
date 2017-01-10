@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
-
-app.set('port', (process.env.PORT || 5000));
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.use(express.static(__dirname + '/public'));
 
@@ -13,8 +13,13 @@ app.get('/', function(request, response) {
   response.render('pages/index');
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('button press', function(msg){
+    console.log('button was pressed');
+  });
 });
 
-
+http.listen(5000, "0.0.0.0", function() {
+  console.log('Node app is running on port 5000');
+});
