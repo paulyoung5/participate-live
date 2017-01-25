@@ -4003,7 +4003,7 @@ th {
 
 .ui.primary.buttons .button,
 .ui.primary.button {
-  background-color: #d65017;
+  background-color: #D05082;
   color: #FFFFFF;
   text-shadow: none;
   background-image: none;
@@ -4015,21 +4015,21 @@ th {
 
 .ui.primary.buttons .button:hover,
 .ui.primary.button:hover {
-  background-color: #c7440c;
+  background-color: #d23572;
   color: #FFFFFF;
   text-shadow: none;
 }
 
 .ui.primary.buttons .button:focus,
 .ui.primary.button:focus {
-  background-color: #c13c03;
+  background-color: #d12669;
   color: #FFFFFF;
   text-shadow: none;
 }
 
 .ui.primary.buttons .button:active,
 .ui.primary.button:active {
-  background-color: #a83f12;
+  background-color: #bb3268;
   color: #FFFFFF;
   text-shadow: none;
 }
@@ -4038,7 +4038,7 @@ th {
 .ui.primary.buttons .active.button:active,
 .ui.primary.active.button,
 .ui.primary.button .active.button:active {
-  background-color: #cc4208;
+  background-color: #d53171;
   color: #FFFFFF;
   text-shadow: none;
 }
@@ -4047,35 +4047,35 @@ th {
 
 .ui.basic.primary.buttons .button,
 .ui.basic.primary.button {
-  box-shadow: 0px 0px 0px 1px #d65017 inset !important;
-  color: #d65017 !important;
+  box-shadow: 0px 0px 0px 1px #D05082 inset !important;
+  color: #D05082 !important;
 }
 
 .ui.basic.primary.buttons .button:hover,
 .ui.basic.primary.button:hover {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #c7440c inset !important;
-  color: #c7440c !important;
+  box-shadow: 0px 0px 0px 1px #d23572 inset !important;
+  color: #d23572 !important;
 }
 
 .ui.basic.primary.buttons .button:focus,
 .ui.basic.primary.button:focus {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #c13c03 inset !important;
-  color: #c7440c !important;
+  box-shadow: 0px 0px 0px 1px #d12669 inset !important;
+  color: #d23572 !important;
 }
 
 .ui.basic.primary.buttons .active.button,
 .ui.basic.primary.active.button {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #cc4208 inset !important;
-  color: #a83f12 !important;
+  box-shadow: 0px 0px 0px 1px #d53171 inset !important;
+  color: #bb3268 !important;
 }
 
 .ui.basic.primary.buttons .button:active,
 .ui.basic.primary.button:active {
-  box-shadow: 0px 0px 0px 1px #a83f12 inset !important;
-  color: #a83f12 !important;
+  box-shadow: 0px 0px 0px 1px #bb3268 inset !important;
+  color: #bb3268 !important;
 }
 
 .ui.buttons:not(.vertical) > .basic.primary.button:not(:first-child) {
@@ -4090,7 +4090,7 @@ th {
 
 .ui.secondary.buttons .button,
 .ui.secondary.button {
-  background-color: #1B1C1D;
+  background-color: #35A2B9;
   color: #FFFFFF;
   text-shadow: none;
   background-image: none;
@@ -4102,21 +4102,21 @@ th {
 
 .ui.secondary.buttons .button:hover,
 .ui.secondary.button:hover {
-  background-color: #27292a;
+  background-color: #39b5cf;
   color: #FFFFFF;
   text-shadow: none;
 }
 
 .ui.secondary.buttons .button:focus,
 .ui.secondary.button:focus {
-  background-color: #2e3032;
+  background-color: #3ebed8;
   color: #FFFFFF;
   text-shadow: none;
 }
 
 .ui.secondary.buttons .button:active,
 .ui.secondary.button:active {
-  background-color: #343637;
+  background-color: #53b8ce;
   color: #FFFFFF;
   text-shadow: none;
 }
@@ -4125,7 +4125,7 @@ th {
 .ui.secondary.buttons .active.button:active,
 .ui.secondary.active.button,
 .ui.secondary.button .active.button:active {
-  background-color: #27292a;
+  background-color: #35b7d2;
   color: #FFFFFF;
   text-shadow: none;
 }
@@ -4134,35 +4134,35 @@ th {
 
 .ui.basic.secondary.buttons .button,
 .ui.basic.secondary.button {
-  box-shadow: 0px 0px 0px 1px #1B1C1D inset !important;
-  color: #1B1C1D !important;
+  box-shadow: 0px 0px 0px 1px #35A2B9 inset !important;
+  color: #35A2B9 !important;
 }
 
 .ui.basic.secondary.buttons .button:hover,
 .ui.basic.secondary.button:hover {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #27292a inset !important;
-  color: #27292a !important;
+  box-shadow: 0px 0px 0px 1px #39b5cf inset !important;
+  color: #39b5cf !important;
 }
 
 .ui.basic.secondary.buttons .button:focus,
 .ui.basic.secondary.button:focus {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #2e3032 inset !important;
-  color: #27292a !important;
+  box-shadow: 0px 0px 0px 1px #3ebed8 inset !important;
+  color: #39b5cf !important;
 }
 
 .ui.basic.secondary.buttons .active.button,
 .ui.basic.secondary.active.button {
   background: transparent !important;
-  box-shadow: 0px 0px 0px 1px #27292a inset !important;
-  color: #343637 !important;
+  box-shadow: 0px 0px 0px 1px #35b7d2 inset !important;
+  color: #53b8ce !important;
 }
 
 .ui.basic.secondary.buttons .button:active,
 .ui.basic.secondary.button:active {
-  box-shadow: 0px 0px 0px 1px #343637 inset !important;
-  color: #343637 !important;
+  box-shadow: 0px 0px 0px 1px #53b8ce inset !important;
+  color: #53b8ce !important;
 }
 
 .ui.buttons:not(.vertical) > .basic.primary.button:not(:first-child) {
@@ -6165,7 +6165,7 @@ i.flag.zimbabwe:before {
   margin: calc(2rem -  0.14285em ) 0em 1rem;
   padding: 0em 0em;
   font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  font-weight: bold;
+  font-weight: normal;
   line-height: 1.2857em;
   text-transform: none;
   color: rgba(0, 0, 0, 0.87);
@@ -28372,7 +28372,7 @@ a.ui.card:hover,
 
 .ui.toggle.checkbox input:checked ~ .box:before,
 .ui.toggle.checkbox input:checked ~ label:before {
-  background-color: #d65017 !important;
+  background-color: #D05082 !important;
 }
 
 .ui.toggle.checkbox input:checked ~ .box:after,
@@ -28390,7 +28390,7 @@ a.ui.card:hover,
 
 .ui.toggle.checkbox input:focus:checked ~ .box:before,
 .ui.toggle.checkbox input:focus:checked ~ label:before {
-  background-color: #c13c03 !important;
+  background-color: #d12669 !important;
 }
 
 /*******************************

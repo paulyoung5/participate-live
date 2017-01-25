@@ -47,17 +47,17 @@
     Brand Colors
 --------------------*/
 
-@primaryColor        : #d65017;
-@secondaryColor      : @black;
+@primaryColor        : #D05082;
+@secondaryColor      : #35A2B9;
 
-@lightPrimaryColor   : @lightBlue;
-@lightSecondaryColor : @lightBlack;
+@lightPrimaryColor   : lighten(@primaryColor, 15%);
+@lightSecondaryColor : lighten(@secondaryColor, 15%);
 
 /*--------------
   Page Heading
 ---------------*/
 
-@headerFontWeight : bold;
+@headerFontWeight : normal;
 @headerLineHeight : 1.2857em;
 
 @h1 : 2rem;

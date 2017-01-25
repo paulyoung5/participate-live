@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+
+
+  <script src="https://cdn.auth0.com/w2/auth0-7.6.1.min.js"></script>
+</head>
+
+<body class="hero">
+
+  <div id="root" style="margin: 40px auto; padding: 10px; box-sizing: border-box;">
+    <i class="notched circle loading icon"></i>
+</div>
+
+  <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
+    <script>
+
+    var redirectUrl = '<%=env.AUTH0_CALLBACK_URL%>' || window.location.protocol+'//'+window.location.hostname+':'+location.port+'/callback';
+
+    var lock = new Auth0Lock('<%=env.AUTH0_CLIENT_ID%>', '<%=env.AUTH0_DOMAIN%>', {
+      container: 'root',
+       auth: {
+         redirectUrl: redirectUrl,
+         responseType: 'code',
+         params: {
+           scope: 'openid name email picture'
+          }
+        },
+        theme: {
+          logo: '',
+          primaryColor: '#35A2B9'
+        },
+        languageDictionary: {
+          title: "participate.live"
+        }
+          });
+
+            lock.show();
+
+    </script>
+
+</body>
+</html>

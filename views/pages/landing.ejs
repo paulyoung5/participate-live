@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <div class="ui inverted center aligned segment hero">
+
+    <div class="ui container">
+
+      <div id="menu" class="ui fluid inverted secondary borderless basic menu">
+
+        <div class="left header item">
+
+          <a href="/" class="ui image">
+            <img src="/images/logo.svg">
+          </a>
+
+        </div>
+
+        <a href="#" class="item">Features</a>
+
+        <a href="#" class="item showLogin">
+          Log in
+        </a>
+
+        <div class="item">
+
+          <a href="#" class="ui inverted button showSignUp">
+            Sign up
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="ui text center aligned container very padded basic segment slider">
+
+        <h2 class="ui inverted icon header">
+
+          <i class="bar chart icon"></i>
+
+          <div class="content">
+
+              Poll your audience
+
+              <div class="sub header">Get realtime feedback from your audience</div>
+
+          </div>
+
+        </h2>
+
+        <div>
+          <a href="#" class="ui large inverted button showSignUp">Sign up <i class="right arrow icon"></i></a>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="ui vertical padded segment">
+
+    <div class="ui middle aligned stackable grid container">
+
+    <div class="row">
+
+      <div class="eight wide column">
+
+        <h2 class="ui header">Some heading goes here</h2>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et lectus elit. Nulla eleifend et dolor ac molestie. Sed pretium, mi id lobortis pretium, nisi mauris ullamcorper nibh.</p>
+
+        <h2 class="ui header">Some heading goes here</h2>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et lectus elit. Nulla eleifend et dolor ac molestie. Sed pretium, mi id lobortis pretium, nisi mauris ullamcorper nibh.</p>
+
+      </div>
+
+      <div class="six wide right floated center aligned column">
+        <img src="http://placehold.it/350x200">
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="center aligned column">
+
+        <div class="ui large button">Find out more <i class="right arrow icon"></i></div>
+
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="six wide right aligned column">
+
+          <div class="ui grid">
+
+            <div class=""
+
+          </div>
+
+      </div>
+
+      <div class="nine wide right floated column">
+
+          <h2 class="ui header">Some heading goes here</h2>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et lectus elit. Nulla eleifend et dolor ac molestie. Sed pretium, mi id lobortis pretium, nisi mauris ullamcorper nibh.</p>
+
+          <h2 class="ui header">Some heading goes here</h2>
+
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et lectus elit. Nulla eleifend et dolor ac molestie. Sed pretium, mi id lobortis pretium, nisi mauris ullamcorper nibh.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script type="text/javascript" src="/semantic/dist/semantic.min.js"></script>
+  <script src="../../socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/scripts/vue/dist/vue.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/client.js"></script>
+  <script src="https://cdn.auth0.com/w2/auth0-7.6.1.min.js"></script>
+  <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
+
+  <script>
+  var redirectUrl = '<%=env.AUTH0_CALLBACK_URL%>' || window.location.protocol+'//'+window.location.hostname+':'+location.port+'/callback';
+
+  var lock = new Auth0Lock('<%=env.AUTH0_CLIENT_ID%>', '<%=env.AUTH0_DOMAIN%>', {
+     auth: {
+       redirectUrl: redirectUrl,
+       responseType: 'code',
+       params: {
+         scope: 'openid name email picture'
+        }
+      },
+      theme: {
+        logo: '',
+        primaryColor: '#35A2B9'
+      },
+      languageDictionary: {
+        title: "participate.live"
+      }
+        });
+
+        $('.showSignUp').click(function() {
+          lock.show({initialScreen: 'signUp'});
+        });
+
+        $('.showLogin').click(function() {
+          lock.show();
+        });
+
+
+          </script>
+
+</body>
+</html>

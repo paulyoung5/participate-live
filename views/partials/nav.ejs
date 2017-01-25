@@ -1,11 +1,36 @@
-<div class="ui left vertical menu wide sidebar">
-    <a class="item">
-      <i class="dashboard icon"></i> Dashboard
-    </a>
-    <a class="item">
-      <i class="user icon"></i> My Account
-    </a>
-    <a class="item">
-      <i class="log out icon"></i> Log Out
-    </a>
+<header>
+
+  <div class="ui container">
+
+    <div id="menu" class="ui fluid inverted secondary borderless basic menu">
+
+      <div class="left header item">
+
+        <a href="/" class="ui image">
+          <img src="/images/logo.svg">
+        </a>
+
+      </div>
+
+      <% if(typeof(user) !== 'undefined') { %>
+      <div class="item">
+
+        <img class="ui spaced avatar image" src="<%=user.picture%>">
+        <span><%= user.nickname %></span>
+
+      </div>
+      <% } %>
+
+      <div class="item">
+
+        <a href="/logout" class="ui inverted button">
+          Log out
+        </a>
+
+      </div>
+
+    </div>
+
   </div>
+
+</header>
