@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../../partials/header.ejs %>
+</head>
+
+<body>
+
+
+    <% include ../../partials/roomHeader.ejs %>
+
+    <main class="ui very padded segment container">
+
+        <div class="ui stackable grid">
+
+            <div class="ten wide column">
+
+                <div class="ui segment container" v-for="activity in activityList">
+
+                    <h3 class="ui header">
+                        <i class="bar chart icon"></i>
+                        <div class="content">
+                            {{activity.title}}
+                            <div class="sub header">{{ activity.type }}</div>
+                        </div>
+                    </h3>
+
+                    <div class="ui stackable grid">
+
+                        <div class="four wide column">
+                            <a href="#" class="ui small labeled icon button" v-bind:class="{ disabled: !(questionIndex > 0) }" v-on:click="prev"><i class="left arrow icon"></i> Prev</a>
+                        </div>
+
+                        <div class="eight wide column">
+
+                            <div id="activityProgress" class="ui tiny fluid progress" :data-value="questionIndex" :data-total="activity.items.length-1">
+                                <div class="bar"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="four wide column">
+
+                            <a href="#" class="ui small right labeled icon button" v-bind:class="{ disabled: !(questionIndex < activity.items.length-1) }" v-on:click="next"><i class="right arrow icon"></i> Next</a>
+
+                        </div>
+
+                    </div>
+
+                    <poll-question v-for="(item, index) in activity.items" :item="item" v-show="index === questionIndex"></poll-question>
+
+                </div>
+
+            </div>
+
+            <div class="six wide column">
+
+                Some big chart here
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <% include ../partials/roomScripts.ejs %>
+    <script>
+        $('#toolbar').sidebar('setting', 'transition', 'push').sidebar('setting', 'dimPage', 'false').sidebar('toggle');
+
+        $('#activityProgress').progress();
+
+        var roomId = '<%-roomId%>';
+        var room = <%-room%>;
+    </script>
+    <script type="text/javascript" src="/js/client.js"></script>
+
+</body>
+</html>

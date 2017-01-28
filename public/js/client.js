@@ -1,7 +1,19 @@
-// connect to the socket server
-var socket = io.connect();
+'use strict';
 
-// if we get an "info" emit from the socket server then console.log the data we recive
-socket.on('info', function (data) {
-    console.log(data);
+/* globals io: False, roomId: False */
+
+// connect to the socket server
+var socket = io();
+
+socket.on('connect', function() {
+    // Join the room
+    socket.emit('room', roomId);
+});
+
+socket.on('message', function(data) {
+   console.log('Incoming message:', data);
+});
+
+socket.on('info', function(data) {
+   console.log('Incoming info:', data);
 });

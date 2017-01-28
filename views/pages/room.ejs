@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+    <% include ../partials/roomHeader.ejs %>
+
+    <main class="ui very padded segment container">
+
+        <div v-for="activity in activityList">
+
+            <poll-question v-for="(item, index) in activity.items" :item="item" v-show="index === questionIndex"></poll-question>
+
+        </div>
+
+        <a class="ui large fluid primary button"><i class="send icon"></i> Submit</a>
+
+    </main>
+
+    <% include ../partials/roomScripts.ejs %>
+
+    <script>
+        var roomId = '<%-roomId%>';
+        var room = <%-room%>;
+        console.log(room);
+    </script>
+    <script type="text/javascript" src="/js/client.js"></script>
+
+</body>
+</html>

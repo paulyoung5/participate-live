@@ -12,80 +12,129 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
     passport = require('passport'),
-    Auth0Strategy = require('passport-auth0');
+    Auth0Strategy = require('passport-auth0'),
+    io = require('socket.io')(http),
+    mongoose = require('mongoose');
 
-// Set the port (default is 5000)
-var port = process.env.PORT || 5000;
+// Connect to the database
+var dbOptions = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };
 
-// Include our routes
-var routes = require('./routes/index');
+mongoose.connect(process.env.MONGODB_URI, dbOptions);
 
-// Set up and use the authentication strategy
-// Details are loaded from vars.env (more secure than hard coding them here)
-passport.use(new Auth0Strategy({
-  domain: process.env.AUTH0_DOMAIN,
-  clientID: process.env.AUTH0_CLIENT_ID,
-  clientSecret: process.env.AUTH0_CLIENT_SECRET,
-  callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:'+ port + '/callback'
-}, function(accessToken, refreshToken, extraParams, profile, done) {
-  return done(null, profile);
-}));
+var conn = mongoose.connection;
+conn.on('error', console.error.bind(console, 'connection error:'));
 
-// The searlize and deserialize user methods will allow us to get the user data once they are logged in.
+// Once we've connected to the database
+conn.once('open', function() {
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
+      // Set the port (default is 5000)
+      var port = process.env.PORT || 5000;
 
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-});
+      // Set up and use the authentication strategy
+      // Details are loaded from vars.env (more secure than hard coding them here)
+      passport.use(new Auth0Strategy({
+        domain: process.env.AUTH0_DOMAIN,
+        clientID: process.env.AUTH0_CLIENT_ID,
+        clientSecret: process.env.AUTH0_CLIENT_SECRET,
+        callbackURL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:'+ port + '/callback'
+      }, function(accessToken, refreshToken, extraParams, profile, done) {
+        return done(null, profile);
+      }));
 
-// All template files will be held in views
-app.set('views', __dirname + '/views');
-// Use EJS to render templates
-app.set('view engine', 'ejs');
+      // The searlize and deserialize user methods will allow us to get the user data once they are logged in.
 
-// The .use method also acts as a chain of events that will take place once a request hits our Node Js application. First we'll log the request data, parse any incoming data, and so on.
+      passport.serializeUser(function(user, done) {
+        done(null, user);
+      });
+
+      passport.deserializeUser(function(user, done) {
+        done(null, user);
+      });
+
+      // All template files will be held in views
+      app.set('views', __dirname + '/views');
+      // Use EJS to render templates
+      app.set('view engine', 'ejs');
+
+      // The .use method also acts as a chain of events that will take place once a request hits our Node Js application. First we'll log the request data, parse any incoming data, and so on.
 
 
-app.use(session({
-  // Here we are creating a unique session identifier
-  secret: 'som3s3cr3tp4sscode',
-  resave: true,
-  saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+      app.use(session({
+        // Here we are creating a unique session identifier
+        secret: 'som3s3cr3tp4sscode',
+        resave: true,
+        saveUninitialized: true
+      }));
+      app.use(passport.initialize());
+      app.use(passport.session());
 
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+      app.use(logger('dev'));
+      app.use(bodyParser.json());
+      app.use(bodyParser.urlencoded({ extended: false }));
+      app.use(cookieParser());
 
-// Make the 'public' folder available for access to assets
-app.use(express.static(__dirname + '/public'));
-// Similarly, files under /node_modules/ can be accessed by a pseudo directory 'scripts'
-app.use('/scripts', express.static(__dirname + '/node_modules/'));
-app.use('/', routes);
+      // Make the 'public' folder available for access to assets
+      app.use(express.static(__dirname + '/public'));
+      // Similarly, files under /node_modules/ can be accessed by a pseudo directory 'scripts'
+      app.use('/scripts', express.static(__dirname + '/node_modules/'));
 
-// Catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not found');
-  err.status = 404;
-  next(err);
-});
+      // Include routes
+      app.use('/', require('./controllers/index'));
+      app.use('/host', require('./controllers/host'));
+      app.use('/room', require('./controllers/room'));
 
-app.use(function(err, req, res) {
+      app.use('*', function(req, res, next) {
+          var err = new Error();
+          err.status = 404;
+          next(err);
+      });
 
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: err
-  });
+      if(app.get('env') === 'development') {
 
-});
+          app.use(function(err, req, res, next) {
 
-http.listen(port, '0.0.0.0', function() {
-  console.log('Node app is running on port '+port);
+              console.log(err);
+
+                res.status(err.status || 500);
+                res.render('pages/error', {
+                    message: err.message || 'The page you were looking for could not be found.',
+                    error: err,
+                    pageTitle: 'An error occured'
+                });
+            });
+
+      }
+
+      app.use(function(err, req, res, next) {
+            res.status(err.status || 500);
+            res.render('pages/error', {
+                message: 'Something went wrong. Sorry about that.',
+                error: {
+                    title: 'Something went wrong'
+                },
+                pageTitle: 'An error occured'
+            });
+        });
+
+      io.on('connection', function(socket){
+          console.log('a user connected to '+socket);
+
+          socket.emit('info', 'test');
+
+          socket.on('room', function(room) {
+                socket.join(room);
+                io.sockets.in(room).emit('message', 'Welcome to '+room+'!');
+            });
+
+          socket.on('info', function(msg){
+                console.log('message: ' + msg);
+              });
+
+        });
+
+      http.listen(port, '0.0.0.0', function() {
+        console.log('Node app is running on port '+port);
+      });
+
 });

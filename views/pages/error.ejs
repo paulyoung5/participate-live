@@ -1,2 +1,22 @@
-<h1><%=error.status%></h1>
-<%= message %>
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body class="ui very padded basic segment">
+
+    <div class="ui raised very padded center aligned text container segment">
+
+        <h1 class="ui center aligned icon header">
+            <i class="circular warning icon"></i>
+            <%=error.status%>
+        </h1>
+        <p><%= message %></p>
+
+        <a href="/" class="ui large primary button"><i class="left arrow icon"></i> Back to the homepage</a>
+
+    </div>
+
+</body>
+</html>

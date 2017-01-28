@@ -12,19 +12,10 @@
 
       </div>
 
-      <% if(typeof(user) !== 'undefined') { %>
       <div class="item">
 
-        <img class="ui spaced avatar image" v-bind:src="user.picture">
-        <span>{{ user.nickname }}</span>
-
-      </div>
-      <% } %>
-
-      <div class="item">
-
-        <a href="/logout" class="ui inverted button">
-          Log out
+        <a href="/" class="ui inverted button">
+          <i class="compress icon"></i> Leave room
         </a>
 
       </div>

@@ -70,25 +70,13 @@
     </div>
   </h3>
 
-    <div class="ui doubling link cards basic segment">
+    <a href="#" class="ui button"><i class="add icon"></i> Create new</a>
 
+    <div class="ui info message" v-if="activityList.length == 0"><i class="info circle icon"></i> To get started, add a new activity.</div>
 
-        <div class="card">
+    <div class="ui stackable link cards basic segment">
 
-          <div class="content">
-
-            "Continents"
-
-          </div>
-
-          <div class="content">
-
-            <div class="meta">Created Tues 17 Jan</div>
-            <div class="description">A quiz about countries and continents.</div>
-
-          </div>
-
-        </div>
+      <activity-item v-for="activity in activities" v-bind:activity="activity"></activity-item>
 
 
     </div>

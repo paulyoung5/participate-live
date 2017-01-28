@@ -36,32 +36,31 @@
               <i class="users icon"></i>
               <div class="content">
                 My Rooms
-                <div class="sub header">Add, remove or modify rooms</div>
+                <div class="sub header">Manage your rooms</div>
               </div>
             </h3>
 
-            <div class="ui doubling link cards basic segment">
+            <div class="ui info message" v-if="rooms.length == 0"><i class="info circle icon"></i> To get started, add a new room.</div>
 
+            <table class="ui basic celled table" v-if="rooms.length > 0">
 
-                <div class="card">
+                <thead>
+                    <tr>
+                        <th>Room name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="room in rooms">
+                        <td>{{ room.title }}</td>
+                        <td>
+                            <div class="ui button" :click="showEditor"><i class="pencil icon"></i> Edit</div>
+                            <div class="ui button"><i class="cross icon"></i> Delete</div>
+                        <td>
+                    </tr>
+                </tbody>
 
-                  <div class="content">
-
-                    "Continents"
-
-                  </div>
-
-                  <div class="content">
-
-                    <div class="meta">Created Tues 17 Jan</div>
-                    <div class="description">A quiz about countries and continents.</div>
-
-                  </div>
-
-                </div>
-
-
-            </div>
+            </table>
 
           </div>
 
@@ -71,8 +70,17 @@
 
   </main>
 
+  <modal :modal=""></modal>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script type="text/javascript" src="/semantic/dist/semantic.min.js"></script>
+  <script type="text/javascript">
+      $('.ui.checkbox').checkbox();
+      $('.ui.modal').modal();
+
+      var user = <%- user %>;
+      var rooms = <%-rooms%>;
+  </script>
   <script src="../../socket.io/socket.io.js"></script>
   <script type="text/javascript" src="/scripts/vue/dist/vue.js"></script>
   <script type="text/javascript" src="js/app.js"></script>

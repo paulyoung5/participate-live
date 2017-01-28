@@ -2,14 +2,17 @@
 
 var express = require('express'),
     passport = require('passport'),
-    ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
+    ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn(),
+    models = require('../models/index');
+
 var router = express.Router();
 
 router.get('/', function(req, res) {
 
   if(!req.isAuthenticated()) {
     res.render('pages/landing', {
-      env: process.env
+      env: process.env,
+      pageTitle: 'A realtime toolkit for any audience'
     });
   } else {
     res.redirect('/dashboard');
@@ -17,33 +20,48 @@ router.get('/', function(req, res) {
 
 });
 
-router.get('/rooms', function(req, res) {
-  res.render('pages/host/rooms');
+router.get('/rooms', ensureLoggedIn, function(req, res) {
+
+    models.Room.findByUser(req.user.id).then(function(rooms) {
+
+        res.render('pages/host/rooms', {
+            env: process.env,
+            pageTitle: 'My Rooms',
+            rooms: JSON.stringify(rooms),
+            user: JSON.stringify(req.user)
+        });
+
+    }).catch(function(err) {
+
+        res.send('An error occured while trying to grab rooms: ', err);
+
+    });
+
 });
 
-router.get('/settings', function(req, res) {
-  res.render('pages/host/settings');
+router.get('/settings', ensureLoggedIn, function(req, res) {
+  res.render('pages/host/settings', {
+      env: process.env,
+      pageTitle: 'Settings'
+  });
 });
 
 // We are going to do the same thing for the remaining routes.
 router.get('/login',function(req, res){
   res.render('pages/login', {
-    env: process.env
+    env: process.env,
+    pageTitle: 'Log in'
   });
 });
 
-router.get('/dashboard', function(req, res){
+router.get('/dashboard', ensureLoggedIn, function(req, res){
+
   res.render('pages/host/home', {
     env: process.env,
-    user: req.user
+    user: JSON.stringify(req.user),
+    pageTitle: 'Dashboard'
   });
-});
 
-router.get('/user', function(req, res) {
-  res.render('pages/user', {
-    env: process.env,
-    user: req.user
-  });
 });
 
 // Implement the callback route which will redirect the logged in user to the dashboard if authentication succeeds.
