@@ -108,6 +108,9 @@ conn.once('open', function() {
 
       app.use(function(err, req, res, next) {
             res.status(err.status || 500);
+
+            console.log('Error: ', err);
+
             res.render('pages/error', {
                 message: 'Something went wrong. Sorry about that.',
                 error: {
