@@ -54,6 +54,7 @@
                     <tr v-for="room in rooms">
                         <td>{{ room.title }}</td>
                         <td>
+                            <a :href="'/room/' + room._id" class="ui button" target="_blank"><i class="expand icon"></i> Open</a>
                             <div class="ui button" :click="showEditor"><i class="pencil icon"></i> Edit</div>
                             <div class="ui button"><i class="cross icon"></i> Delete</div>
                         <td>

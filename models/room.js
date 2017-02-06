@@ -1,11 +1,16 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+    shortid = require('shortid'),
     Schema = mongoose.Schema;
 
 mongoose.Promise = require('bluebird');
 
 var roomSchema = new Schema({
+    _id: {
+        type: String,
+        'default': shortid.generate
+    },
     title: 'string',
     hostId: 'string',
     activityId: 'string'

@@ -120,19 +120,33 @@ conn.once('open', function() {
             });
         });
 
-      io.on('connection', function(socket){
-          console.log('a user connected to '+socket);
+        io.on('connection', function(socket){
 
-          socket.emit('info', 'test');
+          socket.on('join room', function(room) {
 
-          socket.on('room', function(room) {
-                socket.join(room);
-                io.sockets.in(room).emit('message', 'Welcome to '+room+'!');
+              socket.join(room);
+
+              socket.room = room;
+
+                io.sockets.in(room).emit('update data', {
+
+                    connected: io.sockets.adapter.rooms[room]
+
+                });
+
             });
 
-          socket.on('info', function(msg){
-                console.log('message: ' + msg);
-              });
+            socket.on('disconnect', function() {
+
+                var room = socket.room;
+
+                io.sockets.in(room).emit('update data', {
+
+                    connected: io.sockets.adapter.rooms[room]
+
+                });
+
+            });
 
         });
 

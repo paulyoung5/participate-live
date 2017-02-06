@@ -9,53 +9,71 @@
 
     <% include ../../partials/roomHeader.ejs %>
 
-    <main class="ui very padded segment container">
+    <main class="ui container">
 
-        <div class="ui stackable grid">
+        <div class="ui stackable basic segment grid">
 
-            <div class="ten wide column">
+            <div class="eight wide column">
 
-                <div class="ui segment container" v-for="activity in activityList">
+                <h3 class="ui header">
+                    <i class="circular users icon"></i>
+                    <div class="content">
+                        {{ room.title }}
+                        <div class="sub header userName">{{ user.nickname}}'s room</div>
+                    </div>
+                </h3>
 
-                    <h3 class="ui header">
-                        <i class="bar chart icon"></i>
-                        <div class="content">
-                            {{activity.title}}
-                            <div class="sub header">{{ activity.type }}</div>
+            </div>
+
+            <div class="eight wide column">
+                <div class="ui right floated tiny statistic basic segment">
+                    <div class="value">
+                      <i class="users icon"></i> {{ participants }}
+                    </div>
+                    <div class="label">
+                      Participants
+                    </div>
+                  </div>
+              </div>
+
+            <div class="ten wide basic clearing segment column">
+
+                    <div class="ui padded top attached segment">
+
+                        <div class="ui transparent fluid huge left icon input">
+                          <i class="write icon"></i>
+                          <input type="text" v-model="activityTitle" placeholder="Choose a title" required="true">
                         </div>
-                    </h3>
 
-                    <div class="ui stackable grid">
+                    </div>
 
-                        <div class="four wide column">
-                            <a href="#" class="ui small labeled icon button" v-bind:class="{ disabled: !(questionIndex > 0) }" v-on:click="prev"><i class="left arrow icon"></i> Prev</a>
+                    <div class="ui padded bottom attached segment">
+
+                        <div class="ui top attached label">Answers</div>
+
+                        <div class="ui large fluid action input">
+                            <input id="newAnswerText" type="text" v-model="newAnswerText" placeholder="Enter an answer" v-on:keyup.enter="addNewAnswer">
+                            <a href="#" class="ui button" v-on:click="addNewAnswer"><i class="plus icon"></i> Add</a>
                         </div>
 
-                        <div class="eight wide column">
+                        <div class="ui segments" v-if="answers.length > 0">
 
-                            <div id="activityProgress" class="ui tiny fluid progress" :data-value="questionIndex" :data-total="activity.items.length-1">
-                                <div class="bar"></div>
+                            <div class="ui transparent fluid labeled action input segment" v-for="(answer, index) in answers">
+                                <input type="text" v-model="answer.title">
+                                <a href="#" v-on:click="removeAnswer(index)" class="ui icon button"><i class="remove icon"></i></a>
                             </div>
-
-                        </div>
-
-                        <div class="four wide column">
-
-                            <a href="#" class="ui small right labeled icon button" v-bind:class="{ disabled: !(questionIndex < activity.items.length-1) }" v-on:click="next"><i class="right arrow icon"></i> Next</a>
 
                         </div>
 
                     </div>
 
-                    <poll-question v-for="(item, index) in activity.items" :item="item" v-show="index === questionIndex"></poll-question>
-
-                </div>
+                    <a href="#" class="ui right floated primary button" v-on:click="logData"><i class="play icon"></i> Start activity</a>
 
             </div>
 
             <div class="six wide column">
 
-                Some big chart here
+                Some graph here
 
             </div>
 
@@ -63,16 +81,17 @@
 
     </main>
 
-    <% include ../partials/roomScripts.ejs %>
+    <% include ../../partials/roomScripts.ejs %>
     <script>
         $('#toolbar').sidebar('setting', 'transition', 'push').sidebar('setting', 'dimPage', 'false').sidebar('toggle');
 
         $('#activityProgress').progress();
 
-        var roomId = '<%-roomId%>';
+        var user = <%-user%>;
         var room = <%-room%>;
     </script>
     <script type="text/javascript" src="/js/client.js"></script>
+    <script type="text/javascript" src="/js/session.js"></script>
 
 </body>
 </html>
