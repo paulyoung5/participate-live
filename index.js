@@ -120,6 +120,23 @@ conn.once('open', function() {
             });
         });
 
+        io.configure('production', function() {
+
+            console.log('enabling production mode for socket.io');
+            io.enable('browser client minification');
+            io.enable('browser client etag');
+            io.enable('browser client gzip');
+            io.set('log level', 1);
+            io.set('transports', [
+                'websocket',
+                'flashsocket',
+                'htmlfile',
+                'xhr-polling',
+                'jsonp-polling'
+            ]);
+
+        });
+
         io.on('connection', function(socket){
 
           socket.on('join room', function(room) {
