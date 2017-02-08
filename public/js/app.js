@@ -41,14 +41,8 @@ Vue.component('modal', {
 new Vue({
   el: 'main',
   data: {
-    activities: [
-          /* Example item: {
-            title: 'Continents',
-            description: 'A quiz about countries and continents.',
-            date: '17/1/17'
-          }*/
-      ],
-      rooms: rooms
+    activities: [],
+      rooms: typeof(rooms) !== 'undefined' ? rooms : false
   },
   methods: {
 

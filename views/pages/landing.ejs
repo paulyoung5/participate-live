@@ -22,13 +22,13 @@
 
         <a href="#" class="item">Features</a>
 
-        <a href="#" class="item showLogin">
+        <a href="#" id="showLogin" class="item">
           Log in
         </a>
 
         <div class="item">
 
-          <a href="#" class="ui inverted button showSignUp">
+          <a href="#" class="ui inverted button" id="showSignUp">
             Sign up
           </a>
 
@@ -95,17 +95,11 @@
       </div>
 
     </div>
-    
-  </div>
 
   </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script type="text/javascript" src="/semantic/dist/semantic.min.js"></script>
-  <script src="../../socket.io/socket.io.js"></script>
-  <script type="text/javascript" src="/scripts/vue/dist/vue.js"></script>
-  <script type="text/javascript" src="js/app.js"></script>
-  <script type="text/javascript" src="js/client.js"></script>
+  </div>
+
   <script src="https://cdn.auth0.com/w2/auth0-7.6.1.min.js"></script>
   <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
 
@@ -129,13 +123,13 @@
       }
         });
 
-        $('.showSignUp').click(function() {
+        document.getElementById('showSignUp').onclick = function() {
           lock.show({initialScreen: 'signUp'});
-        });
+        };
 
-        $('.showLogin').click(function() {
+        document.getElementById('showLogin').onclick = function() {
           lock.show();
-        });
+        };
 
 
           </script>
