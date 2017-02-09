@@ -10,6 +10,12 @@
 
     <main class="ui very padded segment container">
 
+        <div id="whiteboard" class="ui loading segment">
+
+            <canvas width="300" height="300"></canvas>
+
+        </div>
+
         <div v-for="activity in activityList">
 
             <poll-question v-for="(item, index) in activity.items" :item="item" v-show="index === questionIndex"></poll-question>
@@ -25,6 +31,7 @@
     <script>
         var room = <%-room%>;
     </script>
+    <script type="text/javascript" src="/js/session.js"></script>
     <script type="text/javascript" src="/js/client.js"></script>
 
 </body>

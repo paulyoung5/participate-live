@@ -120,23 +120,6 @@ conn.once('open', function() {
             });
         });
 
-        io.configure('production', function() {
-
-            console.log('enabling production mode for socket.io');
-            io.enable('browser client minification');
-            io.enable('browser client etag');
-            io.enable('browser client gzip');
-            io.set('log level', 1);
-            io.set('transports', [
-                'websocket',
-                'flashsocket',
-                'htmlfile',
-                'xhr-polling',
-                'jsonp-polling'
-            ]);
-
-        });
-
         io.on('connection', function(socket){
 
           socket.on('join room', function(room) {
@@ -150,6 +133,24 @@ conn.once('open', function() {
                     connected: io.sockets.adapter.rooms[room]
 
                 });
+
+            });
+
+            socket.on('canvas draw', function(data) {
+
+                socket.broadcast.to(socket.room).emit('canvas draw', data);
+
+            });
+
+            socket.on('canvas clear', function() {
+
+                socket.broadcast.to(socket.room).emit('canvas clear');
+
+            });
+
+            socket.on('canvas point', function(data) {
+
+                socket.broadcast.to(socket.room).emit('canvas point', data);
 
             });
 

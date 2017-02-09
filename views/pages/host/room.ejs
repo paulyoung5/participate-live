@@ -36,6 +36,18 @@
                   </div>
               </div>
 
+              <div class="sixteen wide column">
+
+                  <div class="ui button clearWhiteboard"><i class="eraser icon"></i> Clear</div>
+
+                  <div id="whiteboard" class="ui loading segment">
+
+                      <canvas width="700" height="300"></canvas>
+
+                  </div>
+
+              </div>
+
             <div class="ten wide basic clearing segment column">
 
                     <div class="ui padded top attached segment">
@@ -73,7 +85,7 @@
 
             <div class="six wide column">
 
-                Some graph here
+                Test
 
             </div>
 
@@ -83,15 +95,11 @@
 
     <% include ../../partials/roomScripts.ejs %>
     <script>
-        $('#toolbar').sidebar('setting', 'transition', 'push').sidebar('setting', 'dimPage', 'false').sidebar('toggle');
-
-        $('#activityProgress').progress();
-
         var user = <%-user%>;
         var room = <%-room%>;
     </script>
-    <script type="text/javascript" src="/js/client.js"></script>
     <script type="text/javascript" src="/js/session.js"></script>
+    <script type="text/javascript" src="/js/client.js"></script>
 
 </body>
 </html>
