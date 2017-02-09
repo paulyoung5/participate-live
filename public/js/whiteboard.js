@@ -10,7 +10,7 @@ Whiteboard.init = (el, context) => {
 
     context.fillStyle = 'solid';
     context.strokeStyle = '#bada55';
-    context.lineWidth = 5;
+    context.lineWidth = 15;
     context.lineCap = 'round';
 
     Whiteboard.draw = (x, y, type) => {

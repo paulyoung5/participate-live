@@ -26,7 +26,7 @@ socket.on('canvas draw', function(data) {
 
 socket.on('canvas point', function(data) {
 
-    Whiteboard.draw(data.x, data.y);
+    Whiteboard.point(data.x, data.y);
 
 });
 
