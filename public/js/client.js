@@ -41,3 +41,9 @@ socket.on('update data', function(data) {
     Vue.set(vueRoom, 'participants', data.connected.length-1);
 
 });
+
+socket.on('poll vote', function(data) {
+
+    Vue.set()
+
+});

@@ -15,10 +15,7 @@
         <div class="five wide column">
 
           <div class="ui secondary large vertical fluid menu">
-            <a href="/" class="item">
-              <i class="lab icon"></i> My Activities
-            </a>
-            <a href="/rooms" class="item">
+            <a href="/dashboard" class="item">
               <i class="group icon"></i> My Rooms
             </a>
             <a href="/settings" class="active item">
@@ -30,7 +27,7 @@
 
         <div class="eleven wide column">
 
-          <div class="ui raised padded segment">
+          <div class="ui padded segment">
 
             <h3 class="ui header">
               <i class="cogs icon"></i>
@@ -90,11 +87,14 @@
   <script type="text/javascript" src="/semantic/dist/semantic.min.js"></script>
   <script type="text/javascript">
       $('.ui.checkbox').checkbox();
+      var user = <%-user%>;
   </script>
-  <script src="../../socket.io/socket.io.js"></script>
+  <% if(env.NODE_ENV === 'development') { %>
   <script type="text/javascript" src="/scripts/vue/dist/vue.js"></script>
+  <% } else { %>
+  <script type="text/javascript" src="/scripts/vue/dist/vue.min.js"></script>
+  <% } %>
   <script type="text/javascript" src="js/app.js"></script>
-  <script type="text/javascript" src="js/client.js"></script>
 
 </body>
 </html>

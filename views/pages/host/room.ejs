@@ -36,13 +36,32 @@
                   </div>
               </div>
 
-              <div class="sixteen wide column">
+              <div id="whiteboardModal" class="ui modal">
 
-                  <div class="ui button clearWhiteboard"><i class="eraser icon"></i> Clear</div>
+                  <i class="close icon"></i>
 
-                  <div id="whiteboard" class="ui loading segment">
+                  <div class="content">
 
-                      <canvas width="700" height="300"></canvas>
+                      <div class="ui huge left floated vertical buttons">
+
+                          <div class="ui left pointing compact dropdown icon button paintbrushMenu">
+                              <i class="paint brush icon"></i>
+                                <div class="menu">
+                                    <div class="item" v-on:click="setPaintbrushSize()"><i class="tiny circle icon"></i></div>
+                                    <div class="item" v-on:click="setPaintbrushSize('8')"><i class="circle icon"></i></div>
+                                    <div class="item" v-on:click="setPaintbrushSize('16')"><i class="big circle icon"></i></div>
+                                </div>
+                          </div>
+
+                          <div class="ui icon button clearWhiteboard"><i class="eraser icon"></i></div>
+
+                      </div>
+
+                      <div id="whiteboard">
+
+                          <canvas width="700" height="300"></canvas>
+
+                      </div>
 
                   </div>
 
@@ -85,7 +104,7 @@
 
             <div class="six wide column">
 
-                Test
+                <canvas id="answerChart" height="50" width="50"></canvas>
 
             </div>
 
@@ -97,6 +116,26 @@
     <script>
         var user = <%-user%>;
         var room = <%-room%>;
+        $('#whiteboardModal').modal('show');
+        $('.paintbrushMenu').dropdown();
+
+        var answerChart;
+
+        $(function() {
+
+            var ctx = document.getElementById('answerChart').getContext('2d');
+            answerChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: vueRoom.answerTitles,
+                    datasets: [{
+                        label: '# of Votes',
+                        data: vueRoom.answerVotes,
+                        backgroundColor: []
+                    }]
+                }
+            });
+        });
     </script>
     <script type="text/javascript" src="/js/session.js"></script>
     <script type="text/javascript" src="/js/client.js"></script>

@@ -15,8 +15,8 @@
       <% if(typeof(user) !== 'undefined') { %>
       <div class="item">
 
-        <img class="ui spaced avatar image" v-bind:src="user.picture">
-        <span>{{ user.nickname }}</span>
+        <img class="ui spaced avatar image" v-bind:src="user.picture" v-cloak>
+        <span v-cloak>{{ user.nickname }}</span>
 
       </div>
       <% } %>

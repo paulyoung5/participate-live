@@ -14,7 +14,10 @@ var express = require('express'),
     passport = require('passport'),
     Auth0Strategy = require('passport-auth0'),
     io = require('socket.io')(http),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    compression = require('compression');
+
+    app.use(compression());
 
 // Connect to the database
 var dbOptions = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
@@ -109,8 +112,6 @@ conn.once('open', function() {
       app.use(function(err, req, res, next) {
             res.status(err.status || 500);
 
-            console.log('Error: ', err);
-
             res.render('pages/error', {
                 message: 'Something went wrong. Sorry about that.',
                 error: {
@@ -118,6 +119,9 @@ conn.once('open', function() {
                 },
                 pageTitle: 'An error occured'
             });
+
+            console.log('Error: ', err);
+
         });
 
         io.on('connection', function(socket){

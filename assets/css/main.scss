@@ -1,3 +1,5 @@
+[v-cloak] {display: none}
+
 html, body {
   height:100%;
 }
@@ -26,6 +28,10 @@ header {
   min-height:250px;
 
   border-radius:5px;
+
+    .header {
+        margin-bottom:1.5em;
+    }
 
 }
 

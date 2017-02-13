@@ -51,33 +51,49 @@
 
     </div>
 
-    <div class="showMoreTypes">
-      <button class="ui small basic inverted right labeled icon button">
-        <i class="right arrow icon"></i>
-        Show me more types
-      </button>
-    </div>
+    <!--
+    TODO: Implement more types and add cards here
+        <div class="showMoreTypes">
+          <button class="ui small basic inverted right labeled icon button">
+            <i class="right arrow icon"></i>
+            Show me more types
+          </button>
+        </div>
+    -->
 
 </div>
 
-<div class="ui raised padded segment">
+<div class="ui padded segment" v-cloak>
 
-  <h3 class="ui header">
-    <i class="lab icon"></i>
-    <div class="content">
-      My Activities
-      <div class="sub header">Manage your activities</div>
-    </div>
-  </h3>
+    <h3 class="ui header">
+      <i class="users icon"></i>
+      <div class="content">
+        My Rooms
+        <div class="sub header">Manage your rooms</div>
+      </div>
+    </h3>
 
-    <a href="#" class="ui button"><i class="add icon"></i> Create new</a>
+    <div class="ui info message" v-if="rooms.length == 0"><i class="info circle icon"></i> To get started, add a new room.</div>
 
-    <div class="ui info message" v-if="activityList.length == 0"><i class="info circle icon"></i> To get started, add a new activity.</div>
+    <table class="ui basic celled table" v-if="rooms.length > 0">
 
-    <div class="ui stackable link cards basic segment">
+        <thead>
+            <tr>
+                <th>Room name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="room in rooms">
+                <td>{{ room.title }}</td>
+                <td>
+                    <a :href="'/room/' + room._id" class="ui button" target="_blank"><i class="expand icon"></i> Open</a>
+                    <div class="ui button" :click="showEditor"><i class="pencil icon"></i> Edit</div>
+                    <div class="ui button"><i class="cross icon"></i> Delete</div>
+                <td>
+            </tr>
+        </tbody>
 
-      <activity-item v-for="activity in activities" v-bind:activity="activity"></activity-item>
-
-    </div>
+    </table>
 
 </div>

@@ -16,9 +16,32 @@
 
         </div>
 
-        <div v-for="activity in activityList">
+        <div class="ui basic segment">
 
-            <poll-question v-for="(item, index) in activity.items" :item="item" v-show="index === questionIndex"></poll-question>
+            <h3 class="ui dividing header">{{ item.title }}</h3>
+
+            <div class="ui two doubling link cards">
+
+                <a class="ui card" v-on:click="selectAnswer(key)" :class="{ green: key === selectedAnswer }" v-for="(value, key) in item.answers" href="#">
+
+                  <div class="content">
+
+                    <h3 class="ui center aligned header">
+
+                      <div class="content">
+
+                          {{ key }}
+                          <div class="sub header">{{ value }}</div>
+
+                      </div>
+
+                    </h3>
+
+                  </div>
+
+                </a>
+
+            </div>
 
         </div>
 

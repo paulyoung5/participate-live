@@ -102,7 +102,7 @@
 
 .ui.statistics .statistic > .value,
 .ui.statistic > .value {
-  font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Karla', sans-serif, '-apple-system-font', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 4rem;
   font-weight: normal;
   line-height: 1em;

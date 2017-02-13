@@ -20,13 +20,13 @@ router.get('/', function(req, res) {
 
 });
 
-router.get('/rooms', ensureLoggedIn, function(req, res) {
+router.get('/dashboard', ensureLoggedIn, function(req, res) {
 
     models.Room.findByUser(req.user.id).then(function(rooms) {
 
-        res.render('pages/host/rooms', {
+        res.render('pages/host/home', {
             env: process.env,
-            pageTitle: 'My Rooms',
+            pageTitle: 'Dashboard',
             rooms: JSON.stringify(rooms),
             user: JSON.stringify(req.user)
         });
@@ -42,7 +42,8 @@ router.get('/rooms', ensureLoggedIn, function(req, res) {
 router.get('/settings', ensureLoggedIn, function(req, res) {
   res.render('pages/host/settings', {
       env: process.env,
-      pageTitle: 'Settings'
+      pageTitle: 'Settings',
+      user: JSON.stringify(req.user)
   });
 });
 
@@ -52,16 +53,6 @@ router.get('/login',function(req, res){
     env: process.env,
     pageTitle: 'Log in'
   });
-});
-
-router.get('/dashboard', ensureLoggedIn, function(req, res){
-
-  res.render('pages/host/home', {
-    env: process.env,
-    user: JSON.stringify(req.user),
-    pageTitle: 'Dashboard'
-  });
-
 });
 
 // Implement the callback route which will redirect the logged in user to the dashboard if authentication succeeds.

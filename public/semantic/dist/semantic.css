@@ -517,7 +517,7 @@ th {
   vertical-align: baseline;
   background: #E0E1E2 none;
   color: rgba(0, 0, 0, 0.6);
-  font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Karla', sans-serif, '-apple-system-font', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   margin: 0em 0.25em 0em 0em;
   padding: 0.78571429em 1.5em 0.78571429em;
   text-transform: none;
@@ -4561,7 +4561,7 @@ th {
 /* Text Container */
 
 .ui.text.container {
-  font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Karla', sans-serif, '-apple-system-font', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   max-width: 700px !important;
   line-height: 1.5;
 }
@@ -11370,7 +11370,7 @@ img.ui.bordered.image {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   text-align: left;
   line-height: 1.2142em;
-  font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Karla', sans-serif, '-apple-system-font', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 0.67861429em 1em;
   background: #FFFFFF;
   border: 1px solid rgba(34, 36, 38, 0.15);
@@ -17036,7 +17036,7 @@ ol.ui.horizontal.list li:before,
 .ui.form input[type="text"],
 .ui.form input[type="file"],
 .ui.form input[type="url"] {
-  font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Karla', sans-serif, '-apple-system-font', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   margin: 0em;
   outline: none;
   -webkit-appearance: none;
@@ -20395,7 +20395,7 @@ ol.ui.horizontal.list li:before,
   display: -ms-flexbox;
   display: flex;
   margin: 1rem 0em;
-  font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Karla', sans-serif, '-apple-system-font', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   background: #FFFFFF;
   font-weight: normal;
   border: 1px solid rgba(34, 36, 38, 0.15);
@@ -26998,7 +26998,7 @@ a.ui.card:hover,
 
 .ui.statistics .statistic > .value,
 .ui.statistic > .value {
-  font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Karla', sans-serif, '-apple-system-font', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 4rem;
   font-weight: normal;
   line-height: 1em;
@@ -33101,7 +33101,7 @@ a.ui.nag {
 .ui.category.search > .results .category > .name {
   width: 100px;
   background: transparent;
-  font-family: 'Karla', sans-serif, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Karla', sans-serif, '-apple-system-font', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 1em;
   float: 1em;
   float: left;
