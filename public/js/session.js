@@ -1,5 +1,5 @@
 'use strict';
- /* globals Vue: false, user: false, room: false */
+ /* globals Vue: false, user: false, room: false, chartData: false */
 
 var vueRoom = new Vue({
     el: 'main',
@@ -16,18 +16,26 @@ var vueRoom = new Vue({
 
         addNewAnswer: function() {
 
-            answerChart.addData(0, this.newAnswerText);
-
             this.answers.push({
               title: this.newAnswerText,
               votes: 0
             });
             this.newAnswerText = '';
             document.getElementById('newAnswerText').focus();
+
+            chartData.add({
+                title: this.newAnswerText,
+                votes: 0
+            });
+
         },
 
         removeAnswer: function(i) {
+
             this.answers.splice(i, 1);
+
+            chartData.remove(i);
+
         },
 
         logData: function() {
@@ -38,6 +46,9 @@ var vueRoom = new Vue({
         vote: function(i) {
 
             this.answers[i].votes++;
+
+            chartData.get(i).votes++;
+
             console.log('Voted for ', this.answers[i].title);
 
         }

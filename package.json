@@ -30,6 +30,7 @@
     "passport": "0.3.2",
     "passport-auth0": "0.6.0",
     "pg": "6.1.2",
+    "qrcodejs": "1.0.0",
     "semantic-ui": "2.2.7",
     "shortid": "2.2.6",
     "socket.io": "1.7.2",
