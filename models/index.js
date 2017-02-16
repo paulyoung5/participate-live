@@ -1,3 +1,2 @@
-exports.Activity = require('./activity');
 exports.Room = require('./room');
-exports.Poll = require('./poll');
+//exports.Poll = require('./poll');
