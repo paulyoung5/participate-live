@@ -97,8 +97,6 @@ router.get('/:id', function(req, res, next) {
               roomTemplate = 'pages/room';
           }
 
-          console.log(data.user);
-
           return res.render(roomTemplate, data);
 
       };

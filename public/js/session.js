@@ -1,7 +1,7 @@
 'use strict';
  /* globals Vue: false, user: false, room: false, pollChart: false, pollAnswers: false */
 
-var vueRoom = new Vue({
+vueRoom = new Vue({
     el: 'main',
     data: {
         user: typeof user !== 'undefined' ? user : false,

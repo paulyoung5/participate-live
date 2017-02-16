@@ -14,10 +14,7 @@ var express = require('express'),
     passport = require('passport'),
     Auth0Strategy = require('passport-auth0'),
     io = require('socket.io')(http),
-    mongoose = require('mongoose'),
-    compression = require('compression');
-
-    app.use(compression());
+    mongoose = require('mongoose');
 
 // Connect to the database
 var dbOptions = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
