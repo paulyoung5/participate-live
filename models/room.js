@@ -12,8 +12,7 @@ var roomSchema = new Schema({
         'default': shortid.generate
     },
     title: 'string',
-    hostId: 'string',
-    activityId: 'string'
+    hostId: 'string'
 });
 
 roomSchema.statics.findByUser = function(userId) {

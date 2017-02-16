@@ -9,17 +9,21 @@
 
     <% include ../../partials/roomHeader.ejs %>
 
-    <main class="ui container">
+    <main class="ui container" v-cloak>
 
         <div class="ui stackable basic segment grid">
 
-            <div class="eight wide column">
+            <div class="two wide column">
+                <div id="qrcode"></div>
+              </div>
+
+            <div class="fourteen wide column">
 
                 <h1 class="ui header">
 
                     <div class="content">
                         {{ room.title }}
-                        <div class="sub header userName">{{ user.nickname}}'s room</div>
+                        <div class="sub header userName">{{ user.nickname }}'s room</div>
                     </div>
 
                 </h1>
@@ -34,14 +38,6 @@
                 </div>
 
             </div>
-
-            <div class="eight wide column">
-                <div class="ui right floated basic segment">
-
-                        <div id="qrcode"></div>
-
-                  </div>
-              </div>
 
               <div id="whiteboardModal" class="ui modal">
 
@@ -98,20 +94,44 @@
 
                             <div class="ui transparent fluid labeled action input segment" v-for="(answer, index) in answers">
                                 <input type="text" v-model="answer.title">
-                                <a href="#" v-on:click="removeAnswer(index)" class="ui icon button"><i class="remove icon"></i></a>
+                                <a href="#" v-on:click="vote(index, $event)" class="ui icon button" data-tooltip="Vote" data-inverted><i class="bar chart icon"></i></a>
+                                <a href="#" v-on:click="removeAnswer(index, $event)" class="ui icon button" data-tooltip="Remove this answer" data-inverted><i class="remove icon"></i></a>
                             </div>
 
                         </div>
 
                     </div>
 
-                    <a href="#" class="ui right floated primary button" v-on:click="logData"><i class="play icon"></i> Start activity</a>
+                    <a id="startActivity" href="#" class="ui right floated primary button" v-on:click="logData" :class="{ disabled: answers.length === 0 || activityTitle}"><i class="play icon"></i> Start activity</a>
 
             </div>
 
             <div class="six wide column">
 
-                <div id="answerChart"></div>
+                <h3 class="ui dividing header">Preview:</h3>
+
+                <div id="answerChart" style="height: 300px; width: 100%;"></div>
+
+                <h3 class="ui dividing header">Preview:</h3>
+
+                <div id="openResponses">
+
+                    <transition-group name="list-complete" tag="p">
+
+                        <span v-for="(answer, index) in answers" v-bind:key="answer" class="list-answers-item">
+
+                            <div class="ui big left pointing label list-answers-item" v-if="index % 2 == 0" :key="index">
+                              {{ answer.title }}
+                            </div>
+                            <div class="ui big right pointing label list-answers-item" v-if="index % 2 != 0" :key="index">
+                                {{ answer.title }}
+                            </div>
+
+                        </span>
+
+                      </transition-group>
+
+                </div>
 
             </div>
 
@@ -121,41 +141,11 @@
 
     <% include ../../partials/roomScripts.ejs %>
     <script>
+
         var user = <%-user%>;
         var room = <%-room%>;
-        $('#whiteboardModal').modal('show');
+        $('#whiteboardModal').modal();
         $('.paintbrushMenu').dropdown();
-
-        $(function() {
-
-            // Create data array of values to visualize
-            var dataArray = [23, 13, 21, 14, 37, 15, 18, 34, 30];
-
-            // Create variable for the SVG
-            var svg = d3.select("#answerChart").append("svg")
-                      .attr("height","100%")
-                      .attr("width","100%");
-
-            // Select, append to SVG, and add attributes to rectangles for bar chart
-            svg.selectAll("rect")
-                .data(dataArray)
-                .enter().append("rect")
-                      .attr("class", "bar")
-                      .attr("height", function(d, i) {return (d * 10)})
-                      .attr("width","40")
-                      .attr("x", function(d, i) {return (i * 60) + 25})
-                      .attr("y", function(d, i) {return 400 - (d * 10)});
-
-            // Select, append to SVG, and add attributes to text
-            svg.selectAll("text")
-                .data(dataArray)
-                .enter().append("text")
-                .text(function(d) {return d})
-                       .attr("class", "text")
-                       .attr("x", function(d, i) {return (i * 60) + 36})
-                       .attr("y", function(d, i) {return 415 - (d * 10)});
-
-        });
     </script>
     <script type="text/javascript" src="/js/session.js"></script>
     <script type="text/javascript" src="/js/client.js"></script>

@@ -124,7 +124,7 @@ conn.once('open', function() {
 
         });
 
-        io.on('connection', function(socket){
+        io.on('connection', function(socket) {
 
           socket.on('join room', function(room) {
 

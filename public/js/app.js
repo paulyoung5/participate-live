@@ -1,5 +1,5 @@
 'use strict';
- /* globals Vue: false, user: false, rooms: false */
+ /* globals Vue: false, user: false, rooms: false, $: false */
 
 new Vue({
   el: 'header',
@@ -8,49 +8,50 @@ new Vue({
   }
 });
 
-Vue.component('activity-item', {
-  props: ['activity'],
-  template: `<div class="card">
-              <div class="content">
-                "{{ activity.title }}"
-              </div>
-              <div class="content">
-                <div class="meta">Created {{ activity.date }}</div>
-                <div class="description">{{ activity.description }}</div>
-              </div>
-            </div>`
-});
-
-Vue.component('modal', {
-    props: ['modal'],
-    template: `<div class="ui modal">
-                  <i class="close icon"></i>
-                  <div class="header">
-                    {{ modal.title }}
-                  </div>
-                  <div class="content">
-                    <p>{{{ modal.body }}}</p>
-                  </div>
-                  <div class="actions">
-                    <div class="ui button">Cancel</div>
-                    <div class="ui primary button">OK</div>
-                  </div>
-                </div>`
-});
-
-new Vue({
+var vueDashboard = new Vue({
   el: 'main',
   data: {
-    activities: [],
-      rooms: typeof(rooms) !== 'undefined' ? rooms : false
+      activities: [],
+      rooms: typeof(rooms) !== 'undefined' ? rooms : false,
+      user: user
   },
   methods: {
 
-      showEditor: function() {
+      addRoom: function() {
 
-          // TODO: work on display 'Editor' modal for rooms
+          // Prompt the user for a name
+          // Use a browser native approach
+          var roomName = window.prompt('Please enter a name for the new room');
 
-          console.log('test');
+          if(roomName) {
+
+              $.post('/room/create', {
+                  roomName: roomName
+              }).then(function(room) {
+
+                  vueDashboard.rooms.push(room);
+
+              });
+
+          } else {
+              return;
+          }
+
+      },
+
+      deleteRoom: function(room, i, e) {
+
+          e.preventDefault();
+
+          var roomId = room._id;
+
+          $.post('/room/delete', {
+              roomId: roomId
+          }).then(function() {
+              vueDashboard.rooms.splice(i, 1);
+          }).catch(function(err) {
+              console.log(err);
+          });
 
       }
 

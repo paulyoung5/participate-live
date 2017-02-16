@@ -7,26 +7,6 @@ var express = require('express'),
     models = require('../models/index'),
     Room = models.Room;
 
-/*
-Room.create({
-    title: 'Room A',
-    hostId: 'twitter|20535830'
-}, function(err) {
-    if(err) {
-        return new Error(err);
-    }
-});
-
-Room.create({
-    title: 'Room B',
-    hostId: 'facebook|10208302306179706'
-}, function(err) {
-    if(err) {
-        return new Error(err);
-    }
-});
-*/
-
 var isUserHost = (userId, roomId, callback) => {
 
     Room.findById(roomId, function(error, room) {
@@ -41,6 +21,40 @@ var isUserHost = (userId, roomId, callback) => {
     });
 
 };
+
+router.post('/delete', function(req, res, next) {
+
+    var roomId = req.body.roomId;
+
+    assert(roomId, 'roomId is null, defined or empty');
+
+    Room.findById(roomId, function(err, room) {
+
+        if(err) {
+            return next(err);
+        } else if (room === null) {
+            return next(new Error('No room was found with that ID.'));
+        } else {
+            room.remove();
+            res.json(true);
+        }
+
+    });
+
+});
+
+router.post('/create', function(req, res, next) {
+
+    new Room({
+        title: req.body.roomName,
+        hostId: req.user.id
+    }).save().then(function(doc) {
+        res.json(doc);
+    }).catch(function(err) {
+        next(err);
+    });
+
+});
 
 router.get('/:id', function(req, res, next) {
 

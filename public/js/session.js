@@ -1,5 +1,5 @@
 'use strict';
- /* globals Vue: false, user: false, room: false, chartData: false */
+ /* globals Vue: false, user: false, room: false, pollChart: false, pollAnswers: false */
 
 var vueRoom = new Vue({
     el: 'main',
@@ -14,27 +14,36 @@ var vueRoom = new Vue({
     },
     methods: {
 
-        addNewAnswer: function() {
+        addNewAnswer: function(e) {
+
+            e.preventDefault();
+
+            if(!this.newAnswerText) {
+                this.newAnswerText = '';
+                document.getElementById('newAnswerText').focus();
+                return;
+            }
 
             this.answers.push({
               title: this.newAnswerText,
-              votes: 0
+              votes: parseInt(Math.random() * (30 - 5) + 5)
             });
             this.newAnswerText = '';
             document.getElementById('newAnswerText').focus();
 
-            chartData.add({
-                title: this.newAnswerText,
-                votes: 0
-            });
-
         },
 
-        removeAnswer: function(i) {
+        removeAnswer: function(i, e) {
 
-            this.answers.splice(i, 1);
+            e.preventDefault();
 
-            chartData.remove(i);
+            var confirm = window.confirm('Are you sure you want to remove this answer?');
+
+            if(confirm) {
+                this.answers.splice(i, 1);
+            } else {
+                return;
+            }
 
         },
 
@@ -43,11 +52,11 @@ var vueRoom = new Vue({
             console.log(this.answers);
         },
 
-        vote: function(i) {
+        vote: function(i, e) {
+
+            e.preventDefault();
 
             this.answers[i].votes++;
-
-            chartData.get(i).votes++;
 
             console.log('Voted for ', this.answers[i].title);
 
@@ -67,22 +76,34 @@ var vueRoom = new Vue({
         answerVotes: function() {
 
             return this.answers.map(function(a) {
-                return a.votes;
+                return {
+                    y: a.votes,
+                    indexLabel: a.title
+                };
             });
 
         }
 
-    }
+    },
+    watch: {
 
-});
+        activityTitle: function(value) {
 
-var VueWhiteboard = new Vue({
-    el: '#whiteboard',
-    methods: {
-        setPaintbrushSize: function() {
+            pollChart.options.title.text = value;
 
-            console.log('test');
+        },
+
+        answers: {
+
+            handler: function() {
+
+                pollChart.options.data[0].dataPoints = this.answerVotes;
+
+            },
+            deep: true
 
         }
+
     }
+
 });

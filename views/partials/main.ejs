@@ -75,7 +75,7 @@
 
     <div class="ui info message" v-if="rooms.length == 0"><i class="info circle icon"></i> To get started, add a new room.</div>
 
-    <div class="ui top attached fluid primary button">
+    <div class="ui top attached fluid primary button" v-on:click="addRoom">
         <i class="add icon"></i>
         Add new room
     </div>
@@ -85,11 +85,11 @@
         <table class="ui very basic celled table" v-if="rooms.length > 0">
 
             <tbody>
-                <tr v-for="room in rooms">
+                <tr v-for="(room, index) in rooms">
                     <td>{{ room.title }}</td>
                     <td>
                         <a :href="'/room/' + room._id" class="ui button" target="_blank"><i class="expand icon"></i> Open</a>
-                        <div class="ui button"><i class="settings icon"></i> Manage</div>
+                        <div class="ui button" v-on:click="deleteRoom(room, index, $event)"><i class="remove icon"></i> Delete</div>
                     <td>
                 </tr>
             </tbody>

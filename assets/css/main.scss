@@ -86,6 +86,33 @@ a.ui.card {
 
 }
 
+#answerChart, #openResponses {
+    padding:1em;
+    border:2px solid #e3e3e3;
+    overflow:auto;
+    canvas {
+        width:100%;
+    }
+}
+
+.list-answers-item {
+  transition: all 1s;
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-answers-enter, .list-answers-leave-to
+/* .list-complete-leave-active for <2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-answers-leave-active {
+  position: absolute;
+}
+
+.canvasjs-chart-credit {
+   display: none;
+}
+
 // Auth0
 
 .auth0-lock.auth0-lock .auth0-lock-header {
