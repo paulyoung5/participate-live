@@ -1,0 +1,20 @@
+<div class="ui huge left floated vertical buttons">
+
+    <div class="ui left pointing compact dropdown icon button paintbrushMenu">
+        <i class="paint brush icon"></i>
+          <div class="menu">
+              <div class="item" v-on:click="setPaintbrushSize()"><i class="tiny circle icon"></i></div>
+              <div class="item" v-on:click="setPaintbrushSize('8')"><i class="circle icon"></i></div>
+              <div class="item" v-on:click="setPaintbrushSize('16')"><i class="big circle icon"></i></div>
+          </div>
+    </div>
+
+    <div class="ui icon button clearWhiteboard"><i class="eraser icon"></i></div>
+
+</div>
+
+<div id="whiteboard">
+
+    <canvas width="700" height="300"></canvas>
+
+</div>

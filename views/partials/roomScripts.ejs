@@ -1,8 +1,8 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-<script src="/js/jquery/jquery.event.drag-2.2.min.js"></script>
-<script src="/js/jquery/jquery.event.drag.live-2.2.min.js"></script>
-<script src="/js/jquery/jquery.event.drop-2.2.min.js"></script>
-<script src="/js/jquery/jquery.event.drop.live-2.2.min.js"></script>
+<script src="/js/jquery/jquery.event.drag-2.2.js"></script>
+<script src="/js/jquery/jquery.event.drag.live-2.2.js"></script>
+<script src="/js/jquery/jquery.event.drop-2.2.js"></script>
+<script src="/js/jquery/jquery.event.drop.live-2.2.js"></script>
 <!--[if lte IE 8]><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/excanvas.min.js"></script><![endif]-->
 
 <script type="text/javascript" src="/semantic/dist/semantic.min.js"></script>
@@ -24,77 +24,5 @@
 var pollChart,
     pollAnswers = [],
     vueRoom;
-
-window.onload = function() {
-
-    window.blockMenuHeaderScroll = false;
-
-    $(window).on('touchstart', function(e) {
-        if ($(e.target).closest('#whiteboard canvas').length == 1)
-        {
-            blockMenuHeaderScroll = true;
-        }
-    });
-
-    $(window).on('touchend', function() {
-        blockMenuHeaderScroll = false;
-    });
-
-    $(window).on('touchmove', function(e) {
-
-        if (blockMenuHeaderScroll) {
-            e.preventDefault();
-        }
-
-    });
-
-    new QRCode(document.getElementById('qrcode'), {
-         text: window.location.href,
-         width: 80,
-         height: 80,
-         colorDark : '#000000',
-         colorLight : '#ffffff',
-         correctLevel : QRCode.CorrectLevel.H
-     });
-
-     pollChart = new CanvasJS.Chart("answerChart", {
-            title: {
-                text: room.title,
-                fontFamily: "Karla",
-                fontSize: 18
-            },
-            animationEnabled: true,
-            axisY: {
-                tickThickness: 0,
-                lineThickness: 0,
-                valueFormatString: " ",
-                gridThickness: 0
-            },
-            axisX: {
-                tickThickness: 0,
-                lineThickness: 0,
-                labelFontSize: 0,
-                labelFontColor: "#FFF"
-            },
-            data: [
-            {
-                indexLabelFontSize: 18,
-                toolTipContent: "<span style='\"'color: {color};'\"'><strong>{indexLabel}</strong></span><span style='\"'font-size: 18px; margin-left:10px;'\"'>{y} votes</span>",
-
-                indexLabelPlacement: "inside",
-                indexLabelFontColor: "white",
-                indexLabelFontWeight: "normal",
-                type: "bar",
-                dataPoints: pollAnswers
-            }
-            ]
-        });
-
-        setInterval(function() {
-            pollChart.render(), 1000
-        });
-
-
-};
 
 </script>

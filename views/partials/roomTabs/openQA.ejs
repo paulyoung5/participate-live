@@ -1,0 +1,48 @@
+<div class="ui stackable grid">
+
+    <div class="seven wide column">
+
+        <i class="huge circular comment outline icon"></i>
+
+        <div class="ui form">
+
+            <div class="field">
+
+                <textarea v-model="openResponseTitle" placeholder="Click here to ask a question" rows="3"></textarea>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="nine wide column">
+
+        <div class="ui padded segment">
+
+            <div class="ui top attached label">Responses</div>
+
+            <div id="openResponses" v-if="!activityStarted">
+
+                <transition-group name="list-complete" tag="div">
+
+                    <span v-for="(response, index) in responses" v-bind:key="answer" class="list-answers-item">
+
+                        <div class="ui big left pointing label list-answers-item" v-if="index % 2 == 0" :key="index">
+                          {{ response.title }}
+                        </div>
+                        <div class="ui big right pointing label list-answers-item" v-if="index % 2 != 0" :key="index">
+                            {{ response.title }}
+                        </div>
+
+                    </span>
+
+                  </transition-group>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

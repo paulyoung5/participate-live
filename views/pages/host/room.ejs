@@ -9,9 +9,9 @@
 
     <% include ../../partials/roomHeader.ejs %>
 
-    <main class="ui container" v-cloak>
+    <main id="roomContainer" class="ui" :class="{ container: !roomMaximised }" v-cloak>
 
-        <div class="ui stackable basic segment grid">
+        <div id="roomInfobar" class="ui stackable basic segment grid" v-if="!roomMaximised">
 
             <div class="two wide column">
                 <div id="qrcode"></div>
@@ -39,97 +39,50 @@
 
             </div>
 
-              <div id="whiteboardModal" class="ui modal">
+        </div>
+        <div class="ui stackable basic segment grid">
 
-                  <i class="close icon"></i>
+            <div class="sixteen wide column">
 
-                  <div class="content">
+                <div id="roomMenu" class="ui top attached secondary pointing tabular menu">
 
-                      <div class="ui huge left floated vertical buttons">
+                    <a class="active item" data-tab="poll">
+                        <i class="bar chart icon"></i> Audience Poll
+                    </a>
+                    <a class="item" data-tab="whiteboard">
+                        <i class="image icon"></i> Whiteboard
+                    </a>
+                    <a class="item" data-tab="openResponses">
+                        <i class="comments icon"></i> Open Q&amp;A
+                    </a>
 
-                          <div class="ui left pointing compact dropdown icon button paintbrushMenu">
-                              <i class="paint brush icon"></i>
-                                <div class="menu">
-                                    <div class="item" v-on:click="setPaintbrushSize()"><i class="tiny circle icon"></i></div>
-                                    <div class="item" v-on:click="setPaintbrushSize('8')"><i class="circle icon"></i></div>
-                                    <div class="item" v-on:click="setPaintbrushSize('16')"><i class="big circle icon"></i></div>
-                                </div>
-                          </div>
+                    <div class="right floated item">
+                        <a class="ui large icon button" v-on:click="toggleFullScreen">
+                            <i class="maximize icon" v-if="!roomMaximised"></i>
+                            <i class="compress icon" v-if="roomMaximised"></i>
+                        </a>
+                    </div>
 
-                          <div class="ui icon button clearWhiteboard"><i class="eraser icon"></i></div>
+                </div>
+                <div id="roomContent" class="ui bottom attached loading very padded segment">
 
-                      </div>
+                    <div class="ui active tab" data-tab="poll">
 
-                      <div id="whiteboard">
-
-                          <canvas width="700" height="300"></canvas>
-
-                      </div>
-
-                  </div>
-
-              </div>
-
-            <div class="ten wide basic clearing segment column">
-
-                    <div class="ui padded top attached segment">
-
-                        <div class="ui transparent fluid huge left icon input">
-                          <i class="write icon"></i>
-                          <input type="text" v-model="activityTitle" placeholder="Choose a title" required="true">
-                        </div>
+                        <% include ../../partials/roomTabs/poll.ejs %>
 
                     </div>
 
-                    <div class="ui padded bottom attached segment">
+                    <div class="ui tab" data-tab="whiteboard">
 
-                        <div class="ui top attached label">Answers</div>
-
-                        <div class="ui large fluid action input">
-                            <input id="newAnswerText" type="text" v-model="newAnswerText" placeholder="Enter an answer" v-on:keyup.enter="addNewAnswer">
-                            <a href="#" class="ui button" v-on:click="addNewAnswer"><i class="plus icon"></i> Add</a>
-                        </div>
-
-                        <div class="ui segments" v-if="answers.length > 0">
-
-                            <div class="ui transparent fluid labeled action input segment" v-for="(answer, index) in answers">
-                                <input type="text" v-model="answer.title">
-                                <a href="#" v-on:click="vote(index, $event)" class="ui icon button" data-tooltip="Vote" data-inverted><i class="bar chart icon"></i></a>
-                                <a href="#" v-on:click="removeAnswer(index, $event)" class="ui icon button" data-tooltip="Remove this answer" data-inverted><i class="remove icon"></i></a>
-                            </div>
-
-                        </div>
+                        <% include ../../partials/roomTabs/whiteboard.ejs %>
 
                     </div>
 
-                    <a id="startActivity" href="#" class="ui right floated primary button" v-on:click="logData" :class="{ disabled: answers.length === 0 || activityTitle}"><i class="play icon"></i> Start activity</a>
+                    <div class="ui tab" data-tab="openResponses">
 
-            </div>
+                        <% include ../../partials/roomTabs/openQA.ejs %>
 
-            <div class="six wide column">
-
-                <h3 class="ui dividing header">Preview:</h3>
-
-                <div id="answerChart" style="height: 300px; width: 100%;"></div>
-
-                <h3 class="ui dividing header">Preview:</h3>
-
-                <div id="openResponses">
-
-                    <transition-group name="list-complete" tag="p">
-
-                        <span v-for="(answer, index) in answers" v-bind:key="answer" class="list-answers-item">
-
-                            <div class="ui big left pointing label list-answers-item" v-if="index % 2 == 0" :key="index">
-                              {{ answer.title }}
-                            </div>
-                            <div class="ui big right pointing label list-answers-item" v-if="index % 2 != 0" :key="index">
-                                {{ answer.title }}
-                            </div>
-
-                        </span>
-
-                      </transition-group>
+                    </div>
 
                 </div>
 
@@ -147,6 +100,67 @@
         $('#whiteboardModal').modal();
         $('.paintbrushMenu').dropdown();
     </script>
+
+    <script>
+    window.onload = function() {
+
+        $('.tabular.menu .item').tab();
+
+        $('.message .close').on('click', function() {
+            $(this).closest('.message').transition('fade');
+         });
+
+        new QRCode(document.getElementById('qrcode'), {
+             text: window.location.href,
+             width: 80,
+             height: 80,
+             colorDark : '#000000',
+             colorLight : '#ffffff',
+             correctLevel : QRCode.CorrectLevel.H
+         });
+
+         pollChart = new CanvasJS.Chart("answerChart", {
+                title: {
+                    text: room.title,
+                    fontFamily: "Karla",
+                    fontSize: 18
+                },
+                animationEnabled: true,
+                axisY: {
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0
+                },
+                axisX: {
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    labelFontSize: 0,
+                    labelFontColor: "#FFF"
+                },
+                data: [
+                {
+                    indexLabelFontSize: 18,
+                    toolTipContent: "<span style='\"'color: {color};'\"'><strong>{indexLabel}</strong></span><span style='\"'font-size: 18px; margin-left:10px;'\"'>{y} votes</span>",
+
+                    indexLabelPlacement: "inside",
+                    indexLabelFontColor: "white",
+                    indexLabelFontWeight: "normal",
+                    type: "bar",
+                    dataPoints: pollAnswers
+                }
+                ]
+            });
+
+            setInterval(function() {
+                pollChart.render(), 1000
+            });
+
+            document.getElementById('roomContent').classList.remove('loading');
+
+        }
+    </script>
+
     <script type="text/javascript" src="/js/session.js"></script>
     <script type="text/javascript" src="/js/client.js"></script>
 

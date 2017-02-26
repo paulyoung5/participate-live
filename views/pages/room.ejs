@@ -8,44 +8,30 @@
 
     <% include ../partials/roomHeader.ejs %>
 
-    <main class="ui very padded segment container">
+    <main class="ui very padded blurring segment container" v-cloak>
 
-        <div id="whiteboard" class="ui loading segment">
+        <div class="ui dimmer" :class="{ active: !activityStarted }">
+            <div class="ui indeterminate text loader">Waiting for the next activity to begin</div>
+        </div>
 
-            <canvas width="300" height="300"></canvas>
+        <div id="whiteboard" class="ui loading segment" v-if="whiteboardEnabled">
+
+            <canvas width="700" height="300"></canvas>
 
         </div>
 
-        <div class="ui basic segment">
+        <h3 class="ui header" v-if="activityTitle">{{ activityTitle }}</h3>
 
-            <h3 class="ui dividing header">{{ item.title }}</h3>
+        <h3 class="ui header" v-if="openResponseTitle">{{ openResponseTitle }}</h3>
 
-            <div class="ui two doubling link cards">
+        <div class="ui segments" v-if="answers.length > 0">
 
-                <a class="ui card" v-on:click="selectAnswer(key)" :class="{ green: key === selectedAnswer }" v-for="(value, key) in item.answers" href="#">
-
-                  <div class="content">
-
-                    <h3 class="ui center aligned header">
-
-                      <div class="content">
-
-                          {{ key }}
-                          <div class="sub header">{{ value }}</div>
-
-                      </div>
-
-                    </h3>
-
-                  </div>
-
-                </a>
-
+            <div class="ui transparent fluid labeled action input segment" v-for="(answer, index) in answers">
+                <input type="text" v-model="answer.title">
+                <a href="#" v-on:click="vote(index, $event)" class="ui icon button" data-tooltip="Vote" data-inverted><i class="bar chart icon"></i></a>
             </div>
 
         </div>
-
-        <a class="ui large fluid primary button"><i class="send icon"></i> Submit</a>
 
     </main>
 
@@ -53,6 +39,30 @@
 
     <script>
         var room = <%-room%>;
+
+
+
+        window.blockMenuHeaderScroll = false;
+
+        $(window).on('touchstart', function(e) {
+            if ($(e.target).closest('#whiteboard canvas').length == 1)
+            {
+                blockMenuHeaderScroll = true;
+            }
+        });
+
+        $(window).on('touchend', function() {
+            blockMenuHeaderScroll = false;
+        });
+
+        $(window).on('touchmove', function(e) {
+
+            if (blockMenuHeaderScroll) {
+                e.preventDefault();
+            }
+
+        });
+
     </script>
     <script type="text/javascript" src="/js/session.js"></script>
     <script type="text/javascript" src="/js/client.js"></script>

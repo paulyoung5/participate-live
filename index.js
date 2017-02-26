@@ -129,13 +129,41 @@ conn.once('open', function() {
 
               socket.room = room;
 
+              /*io.to(socket.id).emit('initial data', {
+
+                  Send initial data to the client.
+                     We need to know:
+                     -- If the activity is in progress
+                     -- If it has, provide:
+                        -- Activity type
+                            -- If poll, provide title and available answers
+                            -- If whiteboard, enable the Whiteboard
+                            -- If open Q&A, enable open Q&A
+
+
+
+              });*/
+
                 io.sockets.in(room).emit('update data', {
 
-                    connected: io.sockets.adapter.rooms[room]
+                    participants: (io.sockets.adapter.rooms[room].length - 1)
 
                 });
 
             });
+
+            socket.on('poll vote', function(i) {
+
+                socket.broadcast.to(socket.room).emit('poll vote', i);
+
+            });
+
+            socket.on('update data', function(data) {
+
+                socket.broadcast.to(socket.room).emit('update data', data);
+
+            });
+
 
             socket.on('canvas draw', function(data) {
 
@@ -155,15 +183,31 @@ conn.once('open', function() {
 
             });
 
+
+
+
+            socket.on('start activity', function() {
+
+                socket.broadcast.to(socket.room).emit('start activity');
+
+            });
+
+            socket.on('stop activity', function() {
+
+                socket.broadcast.to(socket.room).emit('stop activity');
+
+            });
+
+
             socket.on('disconnect', function() {
 
-                var room = socket.room;
+                /*var room = socket.room;
 
                 io.sockets.in(room).emit('update data', {
 
-                    connected: io.sockets.adapter.rooms[room]
+                    participants: io.sockets.adapter.rooms[room].length-1
 
-                });
+                });*/
 
             });
 

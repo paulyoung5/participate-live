@@ -6,6 +6,8 @@ var Whiteboard = {};
 
 Whiteboard.init = (el, context) => {
 
+    alert("whiteboard file");
+
     Whiteboard.el = el;
 
     context.fillStyle = 'solid';
@@ -51,7 +53,7 @@ Whiteboard.init = (el, context) => {
 
 };
 
-$(function() {
+window.onload = function() {
 
     $('#whiteboard').removeClass('loading');
 
@@ -109,4 +111,4 @@ $(function() {
 
     });
 
-});
+};
