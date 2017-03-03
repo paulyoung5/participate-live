@@ -1,20 +1,47 @@
-<div class="ui huge left floated vertical buttons">
+<h3 class="ui header">
+    <i class="circular picture icon"></i>
+    <div class="content">
+        Whiteboard
+        <div class="sub header">Share thoughts and ideas easily, instantly</div>
+    </div>
+</h3>
 
-    <div class="ui left pointing compact dropdown icon button paintbrushMenu">
-        <i class="paint brush icon"></i>
-          <div class="menu">
-              <div class="item" v-on:click="setPaintbrushSize()"><i class="tiny circle icon"></i></div>
-              <div class="item" v-on:click="setPaintbrushSize('8')"><i class="circle icon"></i></div>
-              <div class="item" v-on:click="setPaintbrushSize('16')"><i class="big circle icon"></i></div>
-          </div>
+<div class="ui section divider"></div>
+
+<div class="ui stackable grid">
+
+    <div class="six wide column">
+
+        <div class="ui secondary fluid button" v-on:click="clearWhiteboard"><i class="eraser icon"></i> Clear board</div>
+        <div class="ui center aligned segment colourPicker">
+            <div class="ui top attached label">Colour picker</div>
+            <swatches-picker v-model="colors" @change-color="onChange"></swatches-picker>
+        </div>
+
     </div>
 
-    <div class="ui icon button clearWhiteboard"><i class="eraser icon"></i></div>
+    <div id="whiteboardParent" class="ten wide column">
 
-</div>
+        <div class="ui basic segment">
+            <div class="ui dimmer canvasMsgDimmer">
 
-<div id="whiteboard">
+                <div class="content">
 
-    <canvas width="700" height="300"></canvas>
+                    <div class="centered">
+
+                        <h3 class="ui inverted icon header">
+                            <i class="circular checkmark icon"></i>
+                            Cleared!
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <canvas id="whiteboard" width="600" height="500"></canvas>
+        </div>
+
+    </div>
 
 </div>

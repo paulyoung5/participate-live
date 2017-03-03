@@ -1,20 +1,22 @@
+<h3 class="ui header">
+    <i class="circular bar chart icon"></i>
+    <div class="content">
+        Audience Poll
+        <div class="sub header">Quiz participants and gauge understanding in the room</div>
+    </div>
+</h3>
+
+<div class="ui section divider"></div>
+
 <div class="ui stackable grid">
 
-    <div class="ten wide basic clearing segment column" v-if="!activityStarted">
-
-        <div class="ui info message">
-          <i class="close icon"></i>
-          <div class="header">
-            Set up your poll
-          </div>
-          To get started with your poll, add a question title and some answers below
-        </div>
+    <div class="ten wide basic clearing segment column" v-if="paused">
 
         <div class="ui padded top attached segment">
 
             <div class="ui transparent fluid huge left icon input">
               <i class="write icon"></i>
-              <input type="text" v-model="activityTitle" placeholder="Choose a question" required="true">
+              <input type="text" v-model="activityTitle" placeholder="Choose a question" required="true" autocomplete="off">
             </div>
 
         </div>
@@ -24,15 +26,14 @@
             <div class="ui top attached label">Answers</div>
 
             <div class="ui large fluid action input">
-                <input id="newAnswerText" type="text" v-model="newAnswerText" placeholder="Enter an answer" v-on:keyup.enter="addNewAnswer">
+                <input id="newAnswerText" type="text" v-model="newAnswerText" placeholder="Enter an answer" v-on:keyup.enter="addNewAnswer" autocomplete="off">
                 <a href="#" class="ui button" v-on:click="addNewAnswer"><i class="plus icon"></i> Add</a>
             </div>
 
             <div class="ui segments" v-if="answers.length > 0">
 
                 <div class="ui transparent fluid labeled action input segment" v-for="(answer, index) in answers">
-                    <input type="text" v-model="answer.title">
-                    <a href="#" v-on:click="vote(index, $event)" class="ui icon button" data-tooltip="Vote" data-inverted><i class="bar chart icon"></i></a>
+                    <input type="text" v-model="answer.title" autocomplete="off">
                     <a href="#" v-on:click="removeAnswer(index, $event)" class="ui icon button" data-tooltip="Remove this answer" data-inverted><i class="remove icon"></i></a>
                 </div>
 
@@ -40,13 +41,17 @@
 
         </div>
 
-        <a id="startActivity" href="#" class="ui right floated primary button" :class="{ disabled: answers.length === 0 }" v-on:click="startActivity($event)" v-if="!activityStarted"><i class="play icon"></i> Start activity</a>
+        <a href="#" class="ui right floated primary button" :class="{ disabled: answers.length === 0 }" v-on:click="startPoll($event)" v-if="paused"><i class="play icon"></i> Start poll</a>
 
     </div>
 
     <div id="pollChartPane" class="six wide column">
 
-        <h3 class="ui dividing header" v-if="!activityStarted">Preview:</h3>
+        <h3 class="ui dividing header" v-if="paused">Preview:</h3>
+
+        <div class="ui center aligned fluid segment" v-if="!paused">
+            <i class="users icon"></i> {{ totalVotes }}/{{ participants }} voted so far
+        </div>
 
         <div id="answerChart"></div>
 
@@ -54,7 +59,7 @@
 
     <div class="sixteen wide column">
 
-        <a id="resetActivity" href="#" class="ui large fluid button" v-if="activityStarted" v-on:click="resetActivity($event)"><i class="undo icon"></i> Start over</a>
+        <a id="resetActivity" href="#" class="ui large fluid button" v-if="!paused" v-on:click="resetPoll($event)"><i class="undo icon"></i> Start over</a>
 
     </div>
 

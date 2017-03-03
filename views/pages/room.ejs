@@ -10,25 +10,77 @@
 
     <main class="ui very padded blurring segment container" v-cloak>
 
-        <div class="ui dimmer" :class="{ active: !activityStarted }">
+        <div class="ui dimmer" :class="{ active: paused }">
             <div class="ui indeterminate text loader">Waiting for the next activity to begin</div>
         </div>
 
-        <div id="whiteboard" class="ui loading segment" v-if="whiteboardEnabled">
+        <div class="ui dimmer" :class="{ active: voteCast }">
 
-            <canvas width="700" height="300"></canvas>
+            <div class="content">
+
+                <div class="centered">
+
+                    <h3 class="ui inverted icon header">
+                        <i class="circular checkmark icon"></i>
+                        Vote sent!
+                    </h3>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <h3 class="ui header" v-if="activityTitle">{{ activityTitle }}</h3>
+        <div class="ui segment" :class="{ hidden: (currentActivity !== 'poll')}">
 
-        <h3 class="ui header" v-if="openResponseTitle">{{ openResponseTitle }}</h3>
+            <h3 class="ui header" v-if="activityTitle">{{ activityTitle }}</h3>
 
-        <div class="ui segments" v-if="answers.length > 0">
+            <div class="ui segments" v-if="answers.length > 0">
 
-            <div class="ui transparent fluid labeled action input segment" v-for="(answer, index) in answers">
-                <input type="text" v-model="answer.title">
-                <a href="#" v-on:click="vote(index, $event)" class="ui icon button" data-tooltip="Vote" data-inverted><i class="bar chart icon"></i></a>
+                <div class="ui transparent fluid labeled action input segment" v-for="(answer, index) in answers">
+                    <input type="text" v-model="answer.title">
+                    <a href="#" v-on:click="vote(index, $event)" class="ui button" data-tooltip="Vote" data-inverted>Vote <i class="right arrow icon"></i></a>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="ui segment" :class="{ hidden: (currentActivity !== 'whiteboard')}">
+            <% include ../partials/roomTabs/whiteboard.ejs %>
+        </div>
+
+        <div class="ui segments" :class="{ hidden: (currentActivity !== 'openResponses')}">
+
+            <div class="ui top attached segment">
+
+                <div class="ui top attached label"><i class="comments icon"></i> OPEN Q&AMP;A</div>
+
+                <div class="ui basic fluid center aligned segment">
+                    <h3 class="ui icon header" v-if="openResponseTitle">
+                        <i class="circular question mark icon"></i>
+                        <div class="content">
+                            {{ openResponseTitle }}
+                            <div class="sub header">Type a response below</div>
+                        </div>
+                    </h3>
+                    <span class="placeholder" v-else>Waiting for a question..</span>
+                </div>
+
+            </div>
+            <div class="ui bottom attached segment" v-if="openResponseTitle">
+                <div class="ui big form">
+
+                    <div class="field">
+                        <label>Your response:</label>
+                        <input type="text" v-model="newResponseText" placeholder="Type a response">
+                    </div>
+
+                    <a href="#" v-on:click="submitResponse" class="ui fluid primary button"><i class="send icon"></i> Send</a>
+
+                </div>
+
             </div>
 
         </div>
@@ -38,9 +90,16 @@
     <% include ../partials/roomScripts.ejs %>
 
     <script>
-        var room = <%-room%>;
 
+    var pollAnswers = [],
+        vueRoom,
+        room = <%-room%>;
 
+        window.onload = function() {
+
+            <% include ../partials/whiteboardJquery.ejs %>
+
+        };
 
         window.blockMenuHeaderScroll = false;
 
@@ -64,7 +123,7 @@
         });
 
     </script>
-    <script type="text/javascript" src="/js/session.js"></script>
+    <script type="text/javascript" src="/js/userSession.js"></script>
     <script type="text/javascript" src="/js/client.js"></script>
 
 </body>

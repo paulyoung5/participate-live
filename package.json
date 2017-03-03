@@ -34,7 +34,8 @@
     "semantic-ui": "2.2.7",
     "shortid": "2.2.6",
     "socket.io": "1.7.2",
-    "vue": "2.1.8"
+    "vue": "2.1.8",
+    "vue-color": "2.0.6"
   },
   "repository": {
     "type": "git",

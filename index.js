@@ -183,31 +183,46 @@ conn.once('open', function() {
 
             });
 
+            socket.on('room tab change', function(data) {
 
-
-
-            socket.on('start activity', function() {
-
-                socket.broadcast.to(socket.room).emit('start activity');
+                socket.broadcast.to(socket.room).emit('room tab change', data);
 
             });
 
-            socket.on('stop activity', function() {
 
-                socket.broadcast.to(socket.room).emit('stop activity');
+            socket.on('new response', function(response) {
+
+                socket.broadcast.to(socket.room).emit('new response', response);
+
+            });
+
+
+            socket.on('start poll', function() {
+
+                socket.broadcast.to(socket.room).emit('start poll');
+
+            });
+
+            socket.on('stop poll', function() {
+
+                socket.broadcast.to(socket.room).emit('stop poll');
 
             });
 
 
             socket.on('disconnect', function() {
 
-                /*var room = socket.room;
+                var room = socket.room;
 
-                io.sockets.in(room).emit('update data', {
+                if(io.sockets.adapter.rooms[room]) {
 
-                    participants: io.sockets.adapter.rooms[room].length-1
+                    io.sockets.in(room).emit('update data', {
 
-                });*/
+                        participants: io.sockets.adapter.rooms[room].length - 1
+
+                    });
+
+                }
 
             });
 

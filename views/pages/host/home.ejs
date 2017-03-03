@@ -11,26 +11,25 @@
     <% include ../../partials/nav.ejs %>
   </div>
 
+  <div class="ui hidden divider"></div>
+
   <main>
 
     <div class="ui centered stackable grid container">
 
-        <div class="five wide column">
-
-          <div class="ui secondary huge vertical fluid menu">
-            <a href="/dashboard" class="active item">
-              <i class="group icon"></i> My Rooms
-            </a>
-            <a href="/settings" class="item">
-              <i class="cogs icon"></i> Settings
-            </a>
-          </div>
-
-        </div>
-
         <div class="eleven wide column">
 
           <% include ../../partials/main.ejs %>
+
+        </div>
+
+        <div class="five wide column">
+
+            <h3 class="ui header">Quick links</h3>
+
+            <a href="http://participate-live.helpsite.io" class="ui large fluid button" target="_blank">
+                Frequently asked questions <i class="right chevron icon"></i>
+            </a>
 
         </div>
 

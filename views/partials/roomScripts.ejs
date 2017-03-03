@@ -17,12 +17,12 @@
 <script type="text/javascript" src="/scripts/socket.io-client/dist/socket.io.min.js"></script>
 <% } %>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
-<script type="text/javascript" src="/scripts/qrcodejs/qrcode.min.js"></script>
+<script src="/scripts/vue-color/dist/vue-color.min.js"></script>
+
 <script type="text/javascript">
-
-var pollChart,
-    pollAnswers = [],
-    vueRoom;
-
-</script>
+    var fireRefreshEventOnWindow = function () {
+         var evt = document.createEvent("HTMLEvents");
+         evt.initEvent('resize', true, false);
+         window.dispatchEvent(evt);
+     };
+ </script>

@@ -20,15 +20,13 @@
 
         </div>
 
-        <a href="#" class="item">Features</a>
-
-        <a href="#" id="showLogin" class="item">
+        <a href="#" class="showLogin item">
           Log in
         </a>
 
         <div class="item">
 
-          <a href="#" class="ui inverted button" id="showSignUp">
+          <a href="#" class="ui inverted button showSignUp">
             Sign up
           </a>
 
@@ -62,45 +60,131 @@
 
   </div>
 
-  <div class="ui vertical padded segment">
+  <div class="ui basic very padded segment container">
 
-    <div class="ui middle aligned stackable grid container">
+      <h2 class="ui center aligned header">
+          How it works
+      </h2>
 
-    <div class="row">
-
-      <div class="eight wide column">
-
-        <h2 class="ui header">Some heading goes here</h2>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et lectus elit. Nulla eleifend et dolor ac molestie. Sed pretium, mi id lobortis pretium, nisi mauris ullamcorper nibh.</p>
-
-        <h2 class="ui header">Some heading goes here</h2>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et lectus elit. Nulla eleifend et dolor ac molestie. Sed pretium, mi id lobortis pretium, nisi mauris ullamcorper nibh.</p>
-
-      </div>
-
-      <div class="six wide right floated center aligned column">
-        <img src="http://placehold.it/350x200">
-      </div>
-
-    </div>
-
-    <div class="row">
-
-      <div class="center aligned column">
-
-        <div class="ui large button">Find out more <i class="right arrow icon"></i></div>
-
-      </div>
+      <div class="ui three stackable steps">
+          <div class="step">
+          <i class="pencil icon"></i>
+            <div class="content">
+              <div class="title">Create a room</div>
+              <div class="description">Give your room a name, e.g. Paul's 2nd years</div>
+            </div>
+          </div>
+          <div class="step">
+              <i class="users icon"></i>
+            <div class="content">
+              <div class="title">Share &amp; invite</div>
+              <div class="description">Participants join on their own smart device via URL or QR code</div>
+            </div>
+          </div>
+          <div class="step">
+              <i class="idea icon"></i>
+            <div class="content">
+              <div class="title">The fun part</div>
+              <div class="description">Set questions, start an audience-wide discussion or open up a collaborative whiteboard</div>
+            </div>
+          </div>
+        </div>
 
     </div>
 
-  </div>
+        <div class="ui divider"></div>
 
-  </div>
+        <div class="ui stackable vertically padded two column grid container">
+
+                <div class="column">
+
+                    [ Audience poll graphic ]
+
+                </div>
+
+                <div class="column">
+
+                    <div class="ui basic very padded segment">
+
+                        <h3 class="ui header">
+
+                            <div class="content">
+                                <i class="circular bar chart icon"></i> Real-time audience polling
+                                <div class="sub header">
+                                    Quiz participants with an easy-to-use multiple choice builder. Gauge the level of understanding in the room.
+                                </div>
+                            </div>
+
+                        </h3>
+
+                        <h3 class="ui header">
+
+                            <div class="content">
+                                <i class="circular picture icon"></i> Collaborative whiteboard
+                                <div class="sub header">
+
+                                    Share thoughts and ideas easily, instantly.
+
+                                </div>
+                            </div>
+
+                        </h3>
+
+                        <h3 class="ui header">
+
+                            <div class="content">
+                                <i class="circular comments icon"></i> Open Q&amp;A
+                                <div class="sub header">
+                                    Start an open discussion on anything. Participants can share responses in realtime.
+                                </div>
+                            </div>
+
+                        </h3>
+
+                    </div>
+
+            </div>
+
+        </div>
+
+      <footer>
+
+          <div class="ui basic very padded segment container">
+
+              <div class="ui stackable two column grid">
+
+                  <div class="column">
+
+                      <div class="ui inverted header">
+                          <div class="content">
+                              participate.live
+                              <div class="sub header">
+                                  A realtime toolkit for any audience
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+
+                  <div class="column">
+
+                      <div class="ui largevery relaxed inverted fluid link list">
+                          <a class="item"><i class="sign in icon"></i> Log in</a>
+                          <a class="item"><i class="add user icon"></i> Sign up</a>
+                        </div>
+
+                    </div>
+
+              </div>
+
+          </div>
+
+      </footer>
 
   <script src="https://cdn.auth0.com/w2/auth0-7.6.1.min.js"></script>
+
+
+
   <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
 
   <script>
@@ -123,13 +207,19 @@
       }
         });
 
-        document.getElementById('showSignUp').onclick = function() {
-          lock.show({initialScreen: 'signUp'});
-        };
+        signupEls = document.getElementsByClassName('showSignUp');
+        for(var i = 0; i < signupEls.length; i++) {
+            signupEls[i].onclick = function() {
+              lock.show({initialScreen: 'signUp'});
+            };
+        }
 
-        document.getElementById('showLogin').onclick = function() {
-          lock.show();
-        };
+        loginEls = document.getElementsByClassName('showLogin');
+        for(var i = 0; i < signupEls.length; i++) {
+            loginEls[i].onclick = function() {
+              lock.show();
+            };
+        }
 
 
           </script>

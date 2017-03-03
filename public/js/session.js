@@ -1,30 +1,80 @@
 'use strict';
- /* globals Vue: false, user: false, room: false, pollChart: false, socket: false */
+ /* globals Vue: false, user: false, room: false, pollChart: false, socket: false, VueColor: false, Whiteboard: false */
+
+var Swatches = VueColor.Swatches;
+
+ var defaultProps = {
+  hex: '#194d33',
+  hsl: {
+    h: 150,
+    s: 0.5,
+    l: 0.2,
+    a: 1
+  },
+  hsv: {
+    h: 150,
+    s: 0.66,
+    v: 0.30,
+    a: 1
+  },
+  rgba: {
+    r: 25,
+    g: 77,
+    b: 51,
+    a: 1
+  },
+  a: 1
+};
 
 vueRoom = new Vue({
     el: 'main',
+    components: {
+        'swatches-picker': Swatches
+    },
     data: {
 
         user: typeof user !== 'undefined' ? user : false,
         room: room,
         participants: 0,
         roomMaximised: false,
+        sharingDimmerActive: false,
 
         activityTitle: '',
         newAnswerText: '',
         answers: [],
-        questionIndex: 0,
 
         openResponseTitle: '',
         responses: [],
 
-        activityStarted: false,
-        whiteboardEnabled: false,
-        pollEnabled: false,
-        openResponsesEnabled: false
+        canDraw: [],
+
+        paused: true,
+
+        colors: defaultProps
 
     },
     methods: {
+
+        clearWhiteboard: function() {
+            Whiteboard.clear();
+            socket.emit('canvas clear');
+        },
+
+        onChange (val) {
+          this.colors = val;
+        },
+
+        showSharingDimmer: function() {
+
+            this.sharingDimmerActive = true;
+
+        },
+
+        hideSharingDimmer: function() {
+
+            this.sharingDimmerActive = false;
+
+        },
 
         addNewAnswer: function(e) {
 
@@ -67,8 +117,6 @@ vueRoom = new Vue({
 
             this.answers[i].votes++;
 
-            console.log('Voted for ', this.answers[i].title);
-
         },
 
 
@@ -76,16 +124,18 @@ vueRoom = new Vue({
 
             this.responses.push(r);
 
+            socket.emit('new response', r);
+
         },
 
 
-        startActivity: function(e, activityType) {
+        startPoll: function(e) {
 
             e.preventDefault();
 
             document.getElementById('pollChartPane').className = 'sixteen wide column';
 
-            this.activityStarted = true;
+            this.paused = false;
             this.answers = this.answers.map(function(a) {
                 return {
                     title: a.title,
@@ -93,59 +143,29 @@ vueRoom = new Vue({
                 };
             });
 
-            switch(activityType) {
-
-                case 'poll':
-                    this.pollEnabled = true;
-                    this.whiteboardEnabled = false;
-                    this.openResponsesEnabled = false;
-                    break;
-
-                case 'whiteboard':
-                    this.whiteboardEnabled = true;
-                    this.pollEnabled = false;
-                    this.openResponsesEnabled = false;
-                    break;
-
-                case 'openResponses':
-                    this.openResponsesEnabled = true;
-                    this.pollEnabled = false;
-                    this.whiteboardEnabled = false;
-                    break;
-
-            }
-
             var changes = {
                 activityTitle: this.activityTitle,
                 answers: this.answers,
-                pollEnabled: this.pollEnabled,
-
-                whiteboardEnabled: this.whiteboardEnabled,
 
                 openResponseTitle: this.openResponseTitle,
                 responses: this.responses,
-                openResponsesEnabled: this.openResponsesEnabled
-            };
 
-            console.log('changes pushed to everyone else: ', changes);
+                currentActivity: 'poll'
+            };
 
             socket.emit('update data', changes);
 
         },
 
-        resetActivity: function(e) {
+        resetPoll: function(e) {
 
             e.preventDefault();
 
-            this.activityStarted = false;
+            this.paused = true;
             this.activityTitle = '';
             this.answers = [];
 
             this.openResponseTitle = '';
-
-            this.pollEnabled = false;
-            this.whiteboardEnabled = false;
-            this.openResponsesEnabled = false;
 
             document.getElementById('pollChartPane').className = 'six wide column';
 
@@ -154,6 +174,32 @@ vueRoom = new Vue({
         toggleFullScreen: function() {
 
             this.roomMaximised = !this.roomMaximised;
+
+            setTimeout(function() {
+                fireRefreshEventOnWindow();
+            }, 5);
+
+        },
+
+        addNewResponse: function() {
+            this.responses.push({title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sodales pellentesque bibendum.'});
+        },
+
+        beforeResponseEnter: function() {
+
+            $('html,body').animate({ scrollTop: $("#responses").offset().top}, 'slow');
+
+        },
+
+        afterResponseEnter: function() {
+
+            var responses = document.getElementById('responses');
+
+            if(typeof(responses) !== 'undefined') {
+
+                responses.scrollTop = responses.scrollHeight;
+
+            }
 
         }
 
@@ -177,16 +223,53 @@ vueRoom = new Vue({
                 };
             });
 
+        },
+
+        totalVotes: function() {
+
+            var votes = this.answers.map(function(a) {
+                return a.votes;
+            });
+
+            return votes.reduce(function(a, b) {
+                return a + b;
+            }, 0);
+
         }
 
     },
     watch: {
+
+        openResponseTitle: function(val) {
+
+            this.responses = [];
+
+            socket.emit('update data', {
+                openResponseTitle: val
+            });
+
+        },
+
+        colors: {
+
+            handler: function(value) {
+
+                Whiteboard.setColour(value.hex);
+
+            },
+            deep: true
+
+        },
 
         activityTitle: function(value) {
 
             if(typeof(pollChart) !== 'undefined') {
                 pollChart.options.title.text = value;
             }
+
+            socket.emit('update data', {
+                activityTitle: value
+            });
 
         },
 
@@ -202,15 +285,17 @@ vueRoom = new Vue({
 
         },
 
-        activityStarted: function(value) {
+        paused: function(value) {
 
-            if(value) {
-                socket.emit('start activity');
+            if(!value) {
+                socket.emit('start poll');
             } else {
-                socket.emit('stop activity');
+                socket.emit('stop poll');
             }
 
         }
+
+
 
     }
 

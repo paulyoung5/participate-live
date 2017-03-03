@@ -1,14 +1,25 @@
+<h3 class="ui header">
+    <i class="circular comments icon"></i>
+    <div class="content">
+        Open Q&amp;A
+        <div class="sub header">Start an audience-wide discussion</div>
+    </div>
+</h3>
+
+<div class="ui section divider"></div>
+
 <div class="ui stackable grid">
 
     <div class="seven wide column">
 
-        <i class="huge circular comment outline icon"></i>
+        <div class="ui button" v-on:click="addNewResponse">Add new response</div>
 
         <div class="ui form">
 
             <div class="field">
 
-                <textarea v-model="openResponseTitle" placeholder="Click here to ask a question" rows="3"></textarea>
+                <label>Ask a question:</label>
+                <textarea class="question" v-model="openResponseTitle" placeholder="Click here to set a question" rows="5"></textarea>
 
             </div>
 
@@ -20,26 +31,21 @@
 
         <div class="ui padded segment">
 
-            <div class="ui top attached label">Responses</div>
+            <div class="ui top attached label"><i class="comments icon"></i> Responses</div>
 
-            <div id="openResponses" v-if="!activityStarted">
+            <div class="placeholder" v-if="responses.length === 0">No responses yet</div>
 
-                <transition-group name="list-complete" tag="div">
+            <ul id="responses">
 
-                    <span v-for="(response, index) in responses" v-bind:key="answer" class="list-answers-item">
+                <transition-group name="custom-classes-transition" v-on:before-enter="beforeResponseEnter" v-on:enter="afterResponseEnter" enter-active-class="animated zoomInDown" leave-active-class="animated zoomOutUp">
+                    <li v-for="(response, index) in responses" v-bind:key="response">
+                            <div class="responseBubble" :key="index">
+                                {{ response.title }}
+                            </div>
+                    </li>
+                </transition-group>
 
-                        <div class="ui big left pointing label list-answers-item" v-if="index % 2 == 0" :key="index">
-                          {{ response.title }}
-                        </div>
-                        <div class="ui big right pointing label list-answers-item" v-if="index % 2 != 0" :key="index">
-                            {{ response.title }}
-                        </div>
-
-                    </span>
-
-                  </transition-group>
-
-            </div>
+            </ul>
 
         </div>
 

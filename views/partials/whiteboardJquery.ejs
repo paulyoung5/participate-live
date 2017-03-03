@@ -1,0 +1,50 @@
+var canvasEl = document.getElementById('whiteboard');
+var context = canvasEl.getContext('2d');
+
+Whiteboard.init(canvasEl, context);
+
+var x, y;
+
+$('#whiteboard').drag('start', function( ev, dd ){
+
+    x = ev.pageX - dd.originalX;
+    y = ev.pageY - dd.originalY + 23;
+
+    Whiteboard.draw(x, y, 'dragstart');
+
+    socket.emit('canvas draw', {
+        x: x,
+        y: y,
+        type: 'dragstart',
+        colour: Whiteboard.context.strokeStyle
+    });
+
+}).drag(function( ev, dd ){
+
+    x = ev.pageX - dd.originalX;
+    y = ev.pageY - dd.originalY + 23;
+
+    Whiteboard.draw(x, y, 'drag');
+    socket.emit('canvas draw', {
+        x: x,
+        y: y,
+        type:'drag',
+        colour: Whiteboard.context.strokeStyle
+    });
+
+}).click(function(e) {
+
+    var rect = this.getBoundingClientRect();
+
+    var x = e.clientX - rect.left - 7,
+        y = e.clientY - rect.top + 14;
+
+    Whiteboard.point(x, y);
+
+    socket.emit('canvas point', {
+        x: x,
+        y: y,
+        colour: Whiteboard.context.strokeStyle
+    });
+
+});

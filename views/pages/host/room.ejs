@@ -9,17 +9,89 @@
 
     <% include ../../partials/roomHeader.ejs %>
 
-    <main id="roomContainer" class="ui" :class="{ container: !roomMaximised }" v-cloak>
+    <main id="roomContainer" v-cloak>
 
-        <div id="roomInfobar" class="ui stackable basic segment grid" v-if="!roomMaximised">
+        <div class="ui inverted dimmer" v-bind:class="{ active: sharingDimmerActive }">
 
-            <div class="two wide column">
-                <div id="qrcode"></div>
-              </div>
+            <div class="content">
 
-            <div class="fourteen wide column">
+                <div class="center">
 
-                <h1 class="ui header">
+                        <div class="ui container">
+
+                            <div class="ui big top attached secondary button" v-on:click="hideSharingDimmer">
+                                <i class="remove icon"></i> Close
+                            </div>
+
+                            <div class="ui basic inverted bottom attached very padded segment">
+
+                                <h1 class="ui inverted header">
+                                    <div class="content">
+                                        Share room
+                                        <div class="sub header">{{ participants }} people have joined so far</div>
+                                    </div>
+                                </h1>
+
+                                <div class="ui hidden divider"></div>
+
+                                <div class="ui basic segment">
+
+                                    <div class="ui two column middle aligned very relaxed stackable grid">
+
+                                        <div class="right aligned column">
+
+                                            <div class="ui medium image">
+                                                <div id="qrcodeLarge"></div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="ui inverted vertical divider">
+                                            Or
+                                          </div>
+
+                                        <div class="center aligned column">
+
+                                            <h3 class="ui inverted header">
+                                                <div class="content">
+                                                    <div class="sub header">Open in browser</div>
+                                                    participate.live/room/{{ room._id }}
+                                                </div>
+                                            </h3>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="roomInfobar" v-if="!roomMaximised">
+
+            <div class="ui basic segment container">
+
+                <div class="ui right floated basic compact segment">
+
+                    <div class="stats">
+
+                        <i class="users icon"></i> {{ participants }} participants
+
+                    </div>
+
+                </div>
+
+                <h1 class="ui inverted header">
+
+                    <a id="qrcode" href="#" v-on:click="showSharingDimmer"></a>
 
                     <div class="content">
                         {{ room.title }}
@@ -28,61 +100,55 @@
 
                 </h1>
 
-                <div class="ui mini horizontal statistic">
-                    <div class="value">
-                      <i class="users icon"></i> {{ participants }}
-                    </div>
-                    <div class="label">
-                      Participants
-                    </div>
-                </div>
-
             </div>
 
         </div>
-        <div class="ui stackable basic segment grid">
 
-            <div class="sixteen wide column">
+        <div class="ui basic padded segment" :class="{ container: !roomMaximised }">
 
-                <div id="roomMenu" class="ui top attached secondary pointing tabular menu">
+            <div id="roomMenu" class="ui top attached stackable tabular menu">
 
-                    <a class="active item" data-tab="poll">
-                        <i class="bar chart icon"></i> Audience Poll
+                <a class="active item" data-tab="poll">
+                    <i class="bar chart icon"></i> Audience Poll
+                </a>
+                <a class="item" data-tab="whiteboard">
+                    <i class="image icon"></i> Whiteboard
+                </a>
+                <a class="item" data-tab="openResponses">
+                    <i class="comments icon"></i> Open Q&amp;A
+                </a>
+
+                <div class="right floated item">
+                    <a class="ui large icon button" v-on:click="toggleFullScreen">
+                        <span v-if="!roomMaximised">
+                            <i class="maximize icon"></i>
+                            Maximise space
+                        </span>
+                        <span v-if="roomMaximised">
+                            <i class="compress icon"></i>
+                            Normal mode
+                        </span>
                     </a>
-                    <a class="item" data-tab="whiteboard">
-                        <i class="image icon"></i> Whiteboard
-                    </a>
-                    <a class="item" data-tab="openResponses">
-                        <i class="comments icon"></i> Open Q&amp;A
-                    </a>
+                </div>
 
-                    <div class="right floated item">
-                        <a class="ui large icon button" v-on:click="toggleFullScreen">
-                            <i class="maximize icon" v-if="!roomMaximised"></i>
-                            <i class="compress icon" v-if="roomMaximised"></i>
-                        </a>
-                    </div>
+            </div>
+            <div id="roomContent" class="ui bottom attached loading very padded segment">
+
+                <div class="ui active tab" data-tab="poll">
+
+                    <% include ../../partials/roomTabs/poll.ejs %>
 
                 </div>
-                <div id="roomContent" class="ui bottom attached loading very padded segment">
 
-                    <div class="ui active tab" data-tab="poll">
+                <div class="ui tab" data-tab="whiteboard">
 
-                        <% include ../../partials/roomTabs/poll.ejs %>
+                    <% include ../../partials/roomTabs/whiteboard.ejs %>
 
-                    </div>
+                </div>
 
-                    <div class="ui tab" data-tab="whiteboard">
+                <div class="ui tab" data-tab="openResponses">
 
-                        <% include ../../partials/roomTabs/whiteboard.ejs %>
-
-                    </div>
-
-                    <div class="ui tab" data-tab="openResponses">
-
-                        <% include ../../partials/roomTabs/openQA.ejs %>
-
-                    </div>
+                    <% include ../../partials/roomTabs/openQA.ejs %>
 
                 </div>
 
@@ -92,73 +158,98 @@
 
     </main>
 
+
     <% include ../../partials/roomScripts.ejs %>
-    <script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+    <script type="text/javascript" src="/scripts/qrcodejs/qrcode.min.js"></script>
+    <script type="text/javascript">
 
-        var user = <%-user%>;
-        var room = <%-room%>;
-        $('#whiteboardModal').modal();
-        $('.paintbrushMenu').dropdown();
-    </script>
+    var user = <%-user%>;
+    var room = <%-room%>;
 
-    <script>
-    window.onload = function() {
+    var pollChart,
+        pollAnswers = [],
+        vueRoom;
 
-        $('.tabular.menu .item').tab();
+        window.onload = function() {
 
-        $('.message .close').on('click', function() {
-            $(this).closest('.message').transition('fade');
-         });
-
-        new QRCode(document.getElementById('qrcode'), {
-             text: window.location.href,
-             width: 80,
-             height: 80,
-             colorDark : '#000000',
-             colorLight : '#ffffff',
-             correctLevel : QRCode.CorrectLevel.H
-         });
-
-         pollChart = new CanvasJS.Chart("answerChart", {
-                title: {
-                    text: room.title,
-                    fontFamily: "Karla",
-                    fontSize: 18
-                },
-                animationEnabled: true,
-                axisY: {
-                    tickThickness: 0,
-                    lineThickness: 0,
-                    valueFormatString: " ",
-                    gridThickness: 0
-                },
-                axisX: {
-                    tickThickness: 0,
-                    lineThickness: 0,
-                    labelFontSize: 0,
-                    labelFontColor: "#FFF"
-                },
-                data: [
-                {
-                    indexLabelFontSize: 18,
-                    toolTipContent: "<span style='\"'color: {color};'\"'><strong>{indexLabel}</strong></span><span style='\"'font-size: 18px; margin-left:10px;'\"'>{y} votes</span>",
-
-                    indexLabelPlacement: "inside",
-                    indexLabelFontColor: "white",
-                    indexLabelFontWeight: "normal",
-                    type: "bar",
-                    dataPoints: pollAnswers
+            $('#roomMenu .item').tab({
+                'onLoad': function(tab) {
+                    socket.emit('room tab change', {
+                        tab: tab
+                    });
                 }
-                ]
             });
 
-            setInterval(function() {
-                pollChart.render(), 1000
-            });
+            $('.message .close').on('click', function() {
+                $(this).closest('.message').transition('fade');
+             });
 
-            document.getElementById('roomContent').classList.remove('loading');
+             <% include ../../partials/whiteboardJquery.ejs %>
 
-        }
+            new QRCode(document.getElementById('qrcode'), {
+                 text: window.location.href,
+                 width: 80,
+                 height: 80,
+                 colorDark : '#000000',
+                 colorLight : '#ffffff',
+                 correctLevel : QRCode.CorrectLevel.H
+             });
+
+             new QRCode(document.getElementById('qrcodeLarge'), {
+                  text: window.location.href,
+                  width: 200,
+                  height: 200,
+                  colorDark : '#000000',
+                  colorLight : '#ffffff',
+                  correctLevel : QRCode.CorrectLevel.H
+              });
+
+             pollChart = new CanvasJS.Chart("answerChart", {
+                    title: {
+                        text: room.title,
+                        fontFamily: "Karla",
+                        fontSize: 18
+                    },
+                    animationEnabled: true,
+                    axisY: {
+                        tickThickness: 0,
+                        lineThickness: 0,
+                        valueFormatString: " ",
+                        gridThickness: 0
+                    },
+                    axisX: {
+                        tickThickness: 0,
+                        lineThickness: 0,
+                        labelFontSize: 0,
+                        labelFontColor: "#FFF"
+                    },
+                    data: [
+                    {
+                        indexLabelFontSize: 18,
+                        toolTipContent: "<span style='\"'color: {color};'\"'><strong>{indexLabel}</strong></span><span style='\"'font-size: 18px; margin-left:10px;'\"'>{y} votes</span>",
+
+                        indexLabelPlacement: "inside",
+                        indexLabelFontColor: "white",
+                        indexLabelFontWeight: "normal",
+                        type: "bar",
+                        dataPoints: pollAnswers
+                    }
+                    ]
+                });
+
+                setInterval(function() {
+                    pollChart.render(), 500
+                });
+
+                setInterval(function() {
+                    fireRefreshEventOnWindow();
+                }, 500);
+
+                document.getElementById('roomContent').classList.remove('loading');
+
+            };
+
     </script>
 
     <script type="text/javascript" src="/js/session.js"></script>

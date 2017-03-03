@@ -25,7 +25,7 @@ router.get('/dashboard', ensureLoggedIn, function(req, res) {
     models.Room.findByUser(req.user.id).then(function(rooms) {
 
         res.render('pages/host/home', {
-            env: process.env,
+            env: JSON.stringify(process.env),
             pageTitle: 'Dashboard',
             rooms: JSON.stringify(rooms),
             user: JSON.stringify(req.user)

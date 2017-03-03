@@ -1,53 +1,46 @@
-<div class="gradient-cards">
+<div class="gradient-cards" v-cloak>
 
-    <h3 class="ui inverted header">Get started instantly</h3>
-
-    <% include activityCards.ejs %>
-
-    <!--
-    TODO: Implement more types and add cards here
-        <div class="showMoreTypes">
-          <button class="ui small basic inverted right labeled icon button">
-            <i class="right arrow icon"></i>
-            Show me more types
-          </button>
-        </div>
-    -->
-
-</div>
-
-<div class="ui padded segment" v-cloak>
-
-    <h3 class="ui header">
-      <i class="users icon"></i>
+    <h3 class="ui inverted header">
+      <i class="circular users icon"></i>
       <div class="content">
         My Rooms
         <div class="sub header">Manage your rooms</div>
       </div>
     </h3>
 
-    <div class="ui info message" v-if="rooms.length == 0"><i class="info circle icon"></i> To get started, add a new room.</div>
+    <div class="placeholder" v-if="rooms.length === 0">
+        To get started, add a room
+    </div>
 
-    <div class="ui top attached fluid primary button" v-on:click="addRoom">
+    <div class="ui fluid inverted button" v-on:click="addRoom">
         <i class="add icon"></i>
         Add new room
     </div>
 
-    <div class="ui bottom attached segment">
+    <div class="ui hidden divider"></div>
 
-        <table class="ui very basic celled table" v-if="rooms.length > 0">
+    <div class="ui two stackable cards" v-if="rooms.length > 0">
 
-            <tbody>
-                <tr v-for="(room, index) in rooms">
-                    <td>{{ room.title }}</td>
-                    <td>
-                        <a :href="'/room/' + room._id" class="ui button" target="_blank"><i class="expand icon"></i> Open</a>
-                        <div class="ui button" v-on:click="deleteRoom(room, index, $event)"><i class="remove icon"></i> Delete</div>
-                    <td>
-                </tr>
-            </tbody>
+        <div class="ui card" v-for="(room, index) in rooms">
 
-        </table>
+          <div class="content">
+
+            <h3 class="ui center aligned header">
+                {{ room.title }}
+            </h3>
+
+          </div>
+
+          <div class="ui bottom attached two buttons">
+              <a class="ui button" :href="'/room/'+room._id" target="_blank">
+                  <i class="expand icon"></i> Open
+              </a>
+              <div class="ui button" v-on:click="deleteRoom(room, index, $event)">
+                  <i class="remove icon"></i> Delete
+              </div>
+          </div>
+
+      </div>
 
     </div>
 

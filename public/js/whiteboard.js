@@ -1,114 +1,103 @@
 'use strict';
 
-/* globals $: false, socket: false, room: false */
-
 var Whiteboard = {};
 
 Whiteboard.init = (el, context) => {
 
-    alert("whiteboard file");
-
     Whiteboard.el = el;
+    Whiteboard.context = context;
 
-    context.fillStyle = 'solid';
-    context.strokeStyle = '#bada55';
-    context.lineWidth = 8;
-    context.lineCap = 'round';
+    Whiteboard.context.fillStyle = 'solid';
+    Whiteboard.context.lineWidth = 8;
+    Whiteboard.context.lineCap = 'round';
+
+    Whiteboard.setColour = (colour) => {
+
+        Whiteboard.context.strokeStyle = colour;
+
+    };
 
     Whiteboard.draw = (x, y, type) => {
 
         if(type === 'dragstart') {
-            context.beginPath();
-            return context.moveTo(x, y);
+            Whiteboard.context.beginPath();
+            return Whiteboard.context.moveTo(x, y);
         } else if(type === 'drag') {
-            context.lineTo(x, y);
-            return context.stroke();
+            Whiteboard.context.lineTo(x, y);
+            return Whiteboard.context.stroke();
         } else {
-            return context.closePath();
+            return Whiteboard.context.closePath();
         }
 
     };
 
     Whiteboard.point = (x, y) => {
 
-        var r = context.lineWidth;
+        var r = Whiteboard.context.lineWidth;
 
-        context.beginPath();
-        context.arc(x + r, y + r, r, 0, 2 * Math.PI, false);
+        Whiteboard.context.beginPath();
+        Whiteboard.context.arc(x + r, y + r, r, 0, 2 * Math.PI, false);
 
-        var temp = context.fillStyle;
+        var temp = Whiteboard.context.fillStyle;
 
-        context.fillStyle = context.strokeStyle;
-        context.fill();
+        Whiteboard.context.fillStyle = Whiteboard.context.strokeStyle;
+        Whiteboard.context.fill();
 
-        context.fillStyle = temp;
+        Whiteboard.context.fillStyle = temp;
 
     };
 
     Whiteboard.clear = () => {
-        context.clearRect(0, 0, Whiteboard.el.width(), Whiteboard.el.height());
+
+        $('.canvasMsgDimmer').dimmer('show');
+
+        Whiteboard.context.clearRect(0, 0, Whiteboard.el.width, Whiteboard.el.height);
+
+        setTimeout(function() {
+            $('.canvasMsgDimmer').dimmer('hide');
+        }, 1000);
+
     };
 
+    Whiteboard.resize = () => {
+        Whiteboard.el.width = Whiteboard.el.parentElement.offsetWidth - 35;
+    };
+
+    Whiteboard.redraw = () => {
+
+        var temp = {
+                fillStyle: Whiteboard.context.fillStyle,
+                strokeStyle: Whiteboard.context.strokeStyle,
+                lineCap: Whiteboard.context.lineCap,
+                lineWidth: Whiteboard.context.lineWidth
+        };
+
+        // Grab snapshot of the canvas to repaint later
+        var img = Whiteboard.context.getImageData(0, 0, Whiteboard.el.width, Whiteboard.el.height);
+
+        // Resize the canvas
+        Whiteboard.resize();
+
+        // Repaint the canvas contents
+        Whiteboard.context.putImageData(img, 0, 0);
+
+        // Restyle the canvas pencil
+        for (var property in temp) {
+
+            Whiteboard.context[property] = temp[property];
+
+        }
+
+    };
+
+    Whiteboard.setColour('#d23572');
+
+    window.addEventListener('resize', () => {
+
+        Whiteboard.redraw();
+
+    });
+
     return;
-
-};
-
-window.onload = function() {
-
-    $('#whiteboard').removeClass('loading');
-
-    var el = $('#whiteboard canvas');
-    var context = el[0].getContext('2d');
-
-    Whiteboard.init(el, context);
-
-    var x, y;
-
-    $('#whiteboard canvas').drag('start', function( ev, dd ){
-
-        x = ev.pageX - dd.originalX;
-        y = ev.pageY - dd.originalY + 23;
-
-        Whiteboard.draw(x, y, 'dragstart');
-        socket.emit('canvas draw', {
-            x: x,
-            y: y,
-            type: 'dragstart'
-        });
-
-    }).drag(function( ev, dd ){
-
-        x = ev.pageX - dd.originalX;
-        y = ev.pageY - dd.originalY + 23;
-
-        Whiteboard.draw(x, y, 'drag');
-        socket.emit('canvas draw', {
-            x: x,
-            y: y,
-            type:'drag'
-        });
-
-    }).click(function(e) {
-
-        var rect = this.getBoundingClientRect();
-
-        var x = e.clientX - rect.left - 7,
-            y = e.clientY - rect.top + 14;
-
-        Whiteboard.point(x, y);
-
-        socket.emit('canvas point', {
-            x: x,
-            y: y
-        });
-
-    });
-
-    $('.clearWhiteboard').click(function() {
-
-        Whiteboard.clear();
-        socket.emit('canvas clear');
-
-    });
 
 };

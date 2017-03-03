@@ -20,13 +20,25 @@ socket.on('info', function(data) {
 
 socket.on('canvas draw', function(data) {
 
+    Whiteboard.setColour(data.colour);
+
     Whiteboard.draw(data.x, data.y, data.type);
+
+    setTimeout(function () {
+        Whiteboard.setColour(vueRoom.colors.hex);
+    }, 1000);
 
 });
 
 socket.on('canvas point', function(data) {
 
+    Whiteboard.setColour(data.colour);
+
     Whiteboard.point(data.x, data.y);
+
+    setTimeout(function () {
+        Whiteboard.setColour(vueRoom.colors.hex);
+    }, 1000);
 
 });
 
@@ -54,14 +66,34 @@ socket.on('update data', function(data) {
 
 });
 
-socket.on('start activity', function(data) {
+socket.on('start poll', function(data) {
 
-    Vue.set(vueRoom, 'activityStarted', true);
+    Vue.set(vueRoom, 'paused', false);
 
 });
 
-socket.on('stop activity', function(data) {
+socket.on('stop poll', function(data) {
 
-    Vue.set(vueRoom, 'activityStarted', false);
+    Vue.set(vueRoom, 'paused', true);
+
+});
+
+socket.on('room tab change', function(data) {
+
+    Vue.set(vueRoom, 'currentActivity', data.tab);
+
+    if(data.tab === 'poll') {
+        Vue.set(vueRoom, 'paused', true);
+    } else {
+        Vue.set(vueRoom, 'paused', false);
+    }
+
+});
+
+socket.on('new response', function(response) {
+
+    vueRoom.responses.push({
+        title: response
+    });
 
 });
