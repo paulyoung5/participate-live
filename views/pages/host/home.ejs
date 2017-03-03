@@ -13,28 +13,31 @@
 
   <div class="ui hidden divider"></div>
 
-  <main>
+  <main v-cloak>
 
-    <div class="ui centered stackable grid container">
+      <div class="ui container">
 
-        <div class="eleven wide column">
+        <div class="ui centered stackable padded grid">
 
-          <% include ../../partials/main.ejs %>
+            <div class="eleven wide column">
 
-        </div>
+              <% include ../../partials/main.ejs %>
 
-        <div class="five wide column">
+            </div>
 
-            <h3 class="ui header">Quick links</h3>
+            <div class="five wide column">
 
-            <a href="http://participate-live.helpsite.io" class="ui large fluid button" target="_blank">
-                Frequently asked questions <i class="right chevron icon"></i>
-            </a>
+                <h3 class="ui header">Quick links</h3>
 
-        </div>
+                <a href="http://participate-live.helpsite.io" class="ui fluid button" target="_blank">
+                    Frequently asked questions <i class="right chevron icon"></i>
+                </a>
 
-      </div>
+            </div>
 
+          </div>
+
+    </div>
   </main>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
