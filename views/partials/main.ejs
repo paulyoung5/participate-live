@@ -32,7 +32,7 @@
           </div>
 
           <div class="ui bottom attached two buttons">
-              <a class="ui button" :href="'/room/'+room._id" target="_blank">
+              <a class="ui button" :href="'/room/'+room._id">
                   <i class="expand icon"></i> Open
               </a>
               <div class="ui button" v-on:click="deleteRoom(room, index, $event)">

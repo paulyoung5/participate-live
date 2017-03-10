@@ -27,7 +27,7 @@ var Swatches = VueColor.Swatches;
 };
 
 vueRoom = new Vue({
-    el: 'main',
+    el: '#room',
     components: {
         'swatches-picker': Swatches
     },

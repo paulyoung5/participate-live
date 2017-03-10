@@ -7,58 +7,61 @@
 
 <body>
 
+    <div id="room">
 
-    <% include ../../partials/roomHeader.ejs %>
+        <% include ../../partials/roomHeader.ejs %>
 
-    <main id="roomContainer" v-cloak>
+        <main id="roomContainer" v-cloak>
 
-        <div class="ui inverted dimmer" v-bind:class="{ active: sharingDimmerActive }">
+            <div class="ui inverted dimmer" v-bind:class="{ active: sharingDimmerActive }">
 
-            <div class="content">
+                <div class="content">
 
-                <div class="center">
+                    <div class="center">
 
-                        <div class="ui container">
+                            <div class="ui container">
 
-                            <div class="ui big top attached secondary button" v-on:click="hideSharingDimmer">
-                                <i class="remove icon"></i> Close
-                            </div>
+                                <div class="ui big top attached secondary button" v-on:click="hideSharingDimmer">
+                                    <i class="remove icon"></i> Close
+                                </div>
 
-                            <div class="ui basic inverted bottom attached very padded segment">
+                                <div class="ui basic inverted bottom attached very padded segment">
 
-                                <h1 class="ui inverted header">
-                                    <div class="content">
-                                        Share room
-                                        <div class="sub header">{{ participants }} people have joined so far</div>
-                                    </div>
-                                </h1>
+                                    <h1 class="ui inverted header">
+                                        <div class="content">
+                                            Share room
+                                            <div class="sub header">{{ participants }} people have joined so far</div>
+                                        </div>
+                                    </h1>
 
-                                <div class="ui hidden divider"></div>
+                                    <div class="ui hidden divider"></div>
 
-                                <div class="ui basic segment">
+                                    <div class="ui basic segment">
 
-                                    <div class="ui two column middle aligned very relaxed stackable grid">
+                                        <div class="ui two column middle aligned very relaxed stackable grid">
 
-                                        <div class="right aligned column">
+                                            <div class="right aligned column">
 
-                                            <div class="ui medium image">
-                                                <div id="qrcodeLarge"></div>
+                                                <div class="ui medium image">
+                                                    <div id="qrcodeLarge"></div>
+                                                </div>
+
                                             </div>
 
-                                        </div>
+                                            <div class="ui inverted vertical divider">
+                                                Or
+                                              </div>
 
-                                        <div class="ui inverted vertical divider">
-                                            Or
-                                          </div>
+                                            <div class="center aligned column">
 
-                                        <div class="center aligned column">
+                                                <h3 class="ui inverted header">
+                                                    <div class="content">
+                                                        <div class="sub header">Open in browser</div>
+                                                        participate.live/room/{{ room._id }}
+                                                    </div>
+                                                </h3>
 
-                                            <h3 class="ui inverted header">
-                                                <div class="content">
-                                                    <div class="sub header">Open in browser</div>
-                                                    participate.live/room/{{ room._id }}
-                                                </div>
-                                            </h3>
+                                            </div>
 
                                         </div>
 
@@ -68,96 +71,67 @@
 
                             </div>
 
-                        </div>
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+            <div class="ui basic padded segment" :class="{ container: !roomMaximised }">
 
-        <div id="roomInfobar" v-if="!roomMaximised">
+                <div id="roomMenu" class="ui top attached stackable tabular menu">
 
-            <div class="ui basic segment container">
-
-                <div class="ui right floated basic compact segment">
-
-                    <div class="stats">
-
-                        <i class="users icon"></i> {{ participants }} participants
-
-                    </div>
-
-                </div>
-
-                <h1 class="ui inverted header">
-
-                    <a id="qrcode" href="#" v-on:click="showSharingDimmer"></a>
-
-                    <div class="content">
-                        {{ room.title }}
-                        <div class="sub header userName">{{ user.nickname }}'s room</div>
-                    </div>
-
-                </h1>
-
-            </div>
-
-        </div>
-
-        <div class="ui basic padded segment" :class="{ container: !roomMaximised }">
-
-            <div id="roomMenu" class="ui top attached stackable tabular menu">
-
-                <a class="active item" data-tab="poll">
-                    <i class="bar chart icon"></i> Audience Poll
-                </a>
-                <a class="item" data-tab="whiteboard">
-                    <i class="image icon"></i> Whiteboard
-                </a>
-                <a class="item" data-tab="openResponses">
-                    <i class="comments icon"></i> Open Q&amp;A
-                </a>
-
-                <div class="right floated item">
-                    <a class="ui large icon button" v-on:click="toggleFullScreen">
-                        <span v-if="!roomMaximised">
-                            <i class="maximize icon"></i>
-                            Maximise space
-                        </span>
-                        <span v-if="roomMaximised">
-                            <i class="compress icon"></i>
-                            Normal mode
-                        </span>
+                    <a class="active item" data-tab="poll">
+                        <i class="bar chart icon"></i> Audience Poll
                     </a>
+                    <a class="item" data-tab="whiteboard">
+                        <i class="image icon"></i> Whiteboard
+                    </a>
+                    <a class="item" data-tab="openResponses">
+                        <i class="comments icon"></i> Open Q&amp;A
+                    </a>
+
+                    <div class="right floated item">
+                        <a class="ui large icon button" v-on:click="toggleFullScreen">
+                            <span v-if="!roomMaximised">
+                                <i class="maximize icon"></i>
+                                Maximise space
+                            </span>
+                            <span v-if="roomMaximised">
+                                <i class="compress icon"></i>
+                                Normal mode
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+                <div id="roomContent" class="ui bottom attached loading very padded segment">
+
+                    <div class="ui active tab" data-tab="poll">
+
+                        <% include ../../partials/roomTabs/poll.ejs %>
+
+                    </div>
+
+                    <div class="ui tab" data-tab="whiteboard">
+
+                        <% include ../../partials/roomTabs/whiteboard.ejs %>
+
+                    </div>
+
+                    <div class="ui tab" data-tab="openResponses">
+
+                        <% include ../../partials/roomTabs/openQA.ejs %>
+
+                    </div>
+
                 </div>
 
             </div>
-            <div id="roomContent" class="ui bottom attached loading very padded segment">
 
-                <div class="ui active tab" data-tab="poll">
+        </main>
 
-                    <% include ../../partials/roomTabs/poll.ejs %>
-
-                </div>
-
-                <div class="ui tab" data-tab="whiteboard">
-
-                    <% include ../../partials/roomTabs/whiteboard.ejs %>
-
-                </div>
-
-                <div class="ui tab" data-tab="openResponses">
-
-                    <% include ../../partials/roomTabs/openQA.ejs %>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </main>
+    </div> <!-- </room> -->
 
 
     <% include ../../partials/roomScripts.ejs %>
@@ -187,15 +161,6 @@
              });
 
              <% include ../../partials/whiteboardJquery.ejs %>
-
-            new QRCode(document.getElementById('qrcode'), {
-                 text: window.location.href,
-                 width: 80,
-                 height: 80,
-                 colorDark : '#000000',
-                 colorLight : '#ffffff',
-                 correctLevel : QRCode.CorrectLevel.H
-             });
 
              new QRCode(document.getElementById('qrcodeLarge'), {
                   text: window.location.href,
