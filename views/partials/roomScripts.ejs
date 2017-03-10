@@ -1,20 +1,17 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script src="/js/jquery/jquery.event.drag-2.2.js"></script>
 <script src="/js/jquery/jquery.event.drag.live-2.2.js"></script>
-<script src="/js/jquery/jquery.event.drop-2.2.js"></script>
-<script src="/js/jquery/jquery.event.drop.live-2.2.js"></script>
-<!--[if lte IE 8]><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/excanvas.min.js"></script><![endif]-->
 
 <script type="text/javascript" src="/semantic/dist/semantic.min.js"></script>
 
 <script type="text/javascript" src="/js/whiteboard.js"></script>
 
+<script type="text/javascript" src="/scripts/socket.io-client/dist/socket.io.min.js"></script>
+
 <% if(env.NODE_ENV === 'development') { %>
 <script type="text/javascript" src="/scripts/vue/dist/vue.js"></script>
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <% } else { %>
 <script type="text/javascript" src="/scripts/vue/dist/vue.min.js"></script>
-<script type="text/javascript" src="/scripts/socket.io-client/dist/socket.io.min.js"></script>
 <% } %>
 
 <script src="/scripts/vue-color/dist/vue-color.min.js"></script>
